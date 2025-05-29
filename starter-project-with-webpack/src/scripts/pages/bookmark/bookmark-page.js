@@ -1,0 +1,1 @@
+//berkas ini berfungsi untuk menyimpan cerita 
