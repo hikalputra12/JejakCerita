@@ -1,20 +1,19 @@
 import {
   generateLoaderAbsoluteTemplate,
   generateRemoveStoryButtonTemplate,
-  generateStoryDetailErrorTemplate,
+  generateStoriesDetailErrorTemplate, // Corrected from generateStoryDetailErrorTemplate
   generateStoryDetailTemplate,
   generateSaveStoryButtonTemplate,
-} from '../../templates';
-import { createCarousel } from '../../utils';
-import StoryDetailPresenter from './story-detail-presenter';
-import StoryDetailPresenter from './story-detail'; // Corrected import
-import { parseActivePathname } from '../../routes/url-parser'; // Corrected import
-import Map from '../../utils/map';
-import * as StoryAPI from '../../data/api';
+} from '../../template'; // Corrected import path from '../../templates' to '../../../template'
+import { createCarousel } from '../../utils'; // Assuming createCarousel is in utils/index.js
+import StoryDetailPresenter from './story-detail'; // Corrected import, assuming this imports the actual presenter
+import { parseActivePathname } from '../../routes/url-parser'; //
+import Map from '../../utils/map'; //
+import * as StoryAPI from '../../data/api'; //
 
-export default class StoryDetailPage {
+export default class StoryDetailPage { // Renamed from StoryDetailPresenter in original file
   #presenter = null;
-  #form = null;
+  #form = null; // Unused, can be removed if not needed later.
   #map = null; // kita insisialisasikan ulang variabel map karena hanya bisa di gunakan di kelas ini
 
   async render() {
@@ -31,22 +30,19 @@ export default class StoryDetailPage {
   async afterRender() {
     this.#presenter = new StoryDetailPresenter(parseActivePathname().id, {
       view: this,
-      apiModel: StoryAPI, // Corrected to use imported StoryAPI
+      apiModel: StoryAPI,
     });
 
-    // this.#setupForm(); // Removed or implement if a form exists and needs setup
-
     this.#presenter.showStoryDetail();
-    // this.#presenter.getCommentsList(); // Removed as getCommentsList is not in StoryDetailPresenter
   }
 
   async populateStoryDetailAndInitialMap(message, story) {
     document.getElementById('story-detail').innerHTML = generateStoryDetailTemplate({
       title: story.title,
       description: story.description,
-      evidenceImages: story.evidenceImages,
+      storyImages: story.photo, // Changed from evidenceImages, assuming API returns 'photo' for images
       location :story.location,
-      userName: story.user.name,
+      userName: story.name, // Assuming API returns 'name' for user name
       createdAt: story.createdAt,
     });
 
@@ -64,11 +60,10 @@ export default class StoryDetailPage {
   }
     // Actions buttons
     this.#presenter.showSaveButton();
-    // this.addNotifyMeEventListener(); // Removed as addNotifyMeEventListener is not defined
   }
 
   populateStoryDetailError(message) {
-    document.getElementById('story-detail').innerHTML = generateStoryDetailErrorTemplate(message);
+    document.getElementById('story-detail').innerHTML = generateStoriesDetailErrorTemplate(message); // Corrected template name
   }
 
   async initialMap() {
@@ -76,12 +71,6 @@ export default class StoryDetailPage {
       zoom: 15,
     });
   }
-
-  /*
-  clearForm() {
-    this.#form.reset();
-  }
-  */
 
   renderSaveButton() {
     document.getElementById('save-actions-container').innerHTML =
@@ -110,20 +99,4 @@ export default class StoryDetailPage {
   hideMapLoading() {
     document.getElementById('map-loading-container').innerHTML = '';
   }
-
-  /*
-  showSubmitLoadingButton() {
-    document.getElementById('submit-button-container').innerHTML = `
-      <button class="btn" type="submit" disabled>
-        <i class="fas fa-spinner loader-button"></i> Tanggapi
-      </button>
-    `;
-  }
-
-  hideSubmitLoadingButton() {
-    document.getElementById('submit-button-container').innerHTML = `
-      <button class="btn" type="submit">Tanggapi</button>
-    `;
-  }
-  */
 }

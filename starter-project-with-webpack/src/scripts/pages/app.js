@@ -4,8 +4,8 @@ import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
   generateUnauthenticatedNavigationListTemplate,
-} from '../templates';
-import { setupSkipToContent, transitionHelper } from '../utils';
+} from '../template'; // Corrected import path from '../templates' to '../template'
+import { setupSkipToContent, transitionHelper } from '../utils'; // Added imports for setupSkipToContent and transitionHelper
 import { getAccessToken, getLogout } from '../utils/auth';
 
 export default class App {
@@ -69,16 +69,18 @@ export default class App {
     navList.innerHTML = generateAuthenticatedNavigationListTemplate();
 
     const logoutButton = document.getElementById('logout-button');
-    logoutButton.addEventListener('click', (event) => {
-      event.preventDefault();
+    if (logoutButton) { // Ensure button exists before adding listener
+      logoutButton.addEventListener('click', (event) => {
+        event.preventDefault();
 
-      if (confirm('Apakah Anda yakin ingin keluar?')) {
-        getLogout();
+        if (confirm('Apakah Anda yakin ingin keluar?')) {
+          getLogout();
 
-        // Redirect
-        location.hash = '/login';
-      }
-    });
+          // Redirect
+          location.hash = '/login';
+        }
+      });
+    }
   }
 
   async renderPage() {
@@ -96,11 +98,16 @@ export default class App {
     }
 
     const page = routeHandler();
+    if (!page) { // Handle case where route handler returns null (e.g., due to auth check)
+        return;
+    }
 
     const transition = transitionHelper({
       updateDOM: async () => {
         this.#content.innerHTML = await page.render();
-        page.afterRender();
+        if (page.afterRender) { // Ensure afterRender exists
+            page.afterRender();
+        }
       },
     });
 

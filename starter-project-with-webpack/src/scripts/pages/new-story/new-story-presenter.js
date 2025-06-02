@@ -18,17 +18,10 @@ export default class NewStoryPresenter {
     }
   }
 
-  async postNewReport({ title, damageLevel, description, evidenceImages, latitude, longitude }) {
+  async postNewStory({ title, description, storyImages, latitude, longitude }) { // Renamed from postNewReport and aligned parameters
     this.#view.showSubmitLoadingButton();
     try {
-      const data = {
-        title: title,
-        description: description,
-        storyImages: storyImages,
-        latitude: latitude,
-        longitude: longitude,
-      };
-      const response = await this.#model.storeNewStory(data);
+      const response = await this.#model.addNewStory(title, description, storyImages, latitude, longitude); // Corrected function call and parameter order
 
       if (!response.ok) {
         console.error('postNewStory: response:', response);

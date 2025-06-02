@@ -4,14 +4,14 @@ const ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,
   LOGIN: `${CONFIG.BASE_URL}/login`,
   ADD_NEW_STORY: `${CONFIG.BASE_URL}/stories`,
-  ADD_NEW_STORY_WITH_GUEST_ACCOUNT: `${CONFIG.BASE_URL}/stories/guest`,//belum tentu
+  ADD_NEW_STORY_WITH_GUEST_ACCOUNT: `${CONFIG.BASE_URL}/stories/guest`,
   GET_ALL_STORIES: `${CONFIG.BASE_URL}/stories`,
-  DETAIL_STORY: `${CONFIG.BASE_URL}/stories/:id`,
-  SUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/subscribe`,//belum tentu
-  UNSUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/unsubscribe`,//belum tentu
+  DETAIL_STORY: (id) => `${CONFIG.BASE_URL}/stories/${id}`, // Corrected to be a function that takes ID
+  SUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/subscribe`,
+  UNSUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/unsubscribe`,
 };
 
-export async function registerUser({ name, email, password }) {//sudah
+export async function registerUser({ name, email, password }) {
   try {
     const data = JSON.stringify({ name, email, password });
 
@@ -32,7 +32,7 @@ export async function registerUser({ name, email, password }) {//sudah
   }
 }
 
-export async function loginUser({ email, password }) {//sudah
+export async function loginUser({ email, password }) {
   try {
     const data = JSON.stringify({ email, password });
 
@@ -53,12 +53,16 @@ export async function loginUser({ email, password }) {//sudah
   }
 }
 
-export async function addNewStory(  //sudah
+// Ensure getAccessToken is imported from auth.js as it's used here.
+import { getAccessToken } from '../utils/auth';
+
+export async function addNewStory(
   title,
   description,
-  imagesStory,
+  storyImages, // Renamed from imagesStory for consistency
   latitude,
-  longitude,) {
+  longitude,
+) {
   try {
     const accessToken = getAccessToken();
 
@@ -67,8 +71,8 @@ export async function addNewStory(  //sudah
     formData.set('description', description);
     formData.set('latitude', latitude);
     formData.set('longitude', longitude);
-    evidenceImages.forEach((imagesStory) => {
-      formData.append('imagesStory', imagesStory);
+    storyImages.forEach((imageFile) => { // Renamed from evidenceImages for consistency, and added 'photo' for API field
+      formData.append('photo', imageFile); // API expects 'photo' for image files
     });
 
     const fetchResponse = await fetch(ENDPOINTS.ADD_NEW_STORY, {
@@ -78,14 +82,16 @@ export async function addNewStory(  //sudah
     });
     const json = await fetchResponse.json();
 
+    // Check if response is ok, otherwise return error explicitly
+    if (!fetchResponse.ok) {
+        return { error: true, message: json.message || `HTTP error! Status: ${fetchResponse.status}` };
+    }
+
     return {
       ...json,
       ok: fetchResponse.ok,
     };
 
-    if (!fetchResponse.ok) {
-      return { error: true, message: responseJson.message || `HTTP error! Status: ${fetchResponse.status}` };
-    }
   } catch (error) {
     console.error('Error during add new story API call:', error);
     return { error: true, message: 'Network error when adding story. Please try again.' };
@@ -115,44 +121,46 @@ export async function addNewStoryWithGuestAccount(storyData) {
   }
 }
 
-export async function getAllStories(token = null) {//sudah
+export async function getAllStories() { // Removed token parameter as it's fetched internally
   try {
-    const accessToken = getAccessToken();
+    const accessToken = getAccessToken(); // Ensure getAccessToken is imported or defined
 
     const fetchResponse = await fetch(ENDPOINTS.GET_ALL_STORIES, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const json = await fetchResponse.json();
 
+    if (!fetchResponse.ok) {
+      return { error: true, message: json.message || `HTTP error! Status: ${fetchResponse.status}` };
+    }
+
     return {
       ...json,
       ok: fetchResponse.ok,
     };
-    if (!fetchResponse.ok) {
-      return { error: true, message: responseJson.message || `HTTP error! Status: ${fetchResponse.status}` };
-    }
   } catch (error) {
     console.error('Error during get all stories API call:', error);
     return { error: true, message: 'Network error when fetching stories. Please try again.' };
   }
 }
 
-export async function getDetailStory(id) {//sudah
+export async function getDetailStory(id) {
   try {
-    const accessToken = getAccessToken();
+    const accessToken = getAccessToken(); // Ensure getAccessToken is imported or defined
 
     const fetchResponse = await fetch(ENDPOINTS.DETAIL_STORY(id), {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const json = await fetchResponse.json();
 
+    if (!fetchResponse.ok) {
+      return { error: true, message: json.message || `HTTP error! Status: ${fetchResponse.status}` };
+    }
+
     return {
       ...json,
       ok: fetchResponse.ok,
     };
-    if (!fetchResponse.ok) {
-      return { error: true, message: responseJson.message || `HTTP error! Status: ${fetchResponse.status}` };
-    }
   } catch (error) {
     console.error('Error during get detail story API call:', error);
     return { error: true, message: 'Network error when fetching story detail. Please try again.' };

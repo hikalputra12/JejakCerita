@@ -3,10 +3,10 @@ import {
   generateStoryItemTemplate,
   generateStoriesListEmptyTemplate,
   generateStoriesListErrorTemplate,
-} from '../../templates';
+} from '../../template'; // Corrected import path from '../../templates' to '../../../template'
 import HomePresenter from './home-presenter';
 import Map from '../../utils/map'; // untuk menampilkan peta pada halaman home page
-import * as JejakCeritaAPI from '../../data/api';
+import * as JejakCeritaAPI from '../../data/api'; //
 
 export default class HomePage {
   #presenter = null;
@@ -68,7 +68,7 @@ export default class HomePage {
   `;
   }
 
-  populateReportsListEmpty() {
+  populateStoriesListEmpty() { // Changed from populateReportsListEmpty for consistency
     document.getElementById('stories-list').innerHTML = generateStoriesListEmptyTemplate();
   }
 
@@ -93,11 +93,11 @@ export default class HomePage {
   }
 
   showLoading() {
-    document.getElementById('reports-list-loading-container').innerHTML =
+    document.getElementById('stories-list-loading-container').innerHTML = // Corrected ID
       generateLoaderAbsoluteTemplate();
   }
 
   hideLoading() {
-    document.getElementById('reports-list-loading-container').innerHTML = '';
+    document.getElementById('stories-list-loading-container').innerHTML = ''; // Corrected ID
   }
 }

@@ -31,9 +31,9 @@ export default class HomePresenter {
         this.#view.populateStoriesListError(response.message);
         return;
       }
-      // Map setiap story dalam array response.data untuk mendapatkan placeName
+      // Map setiap story dalam array response.listStory untuk mendapatkan placeName
       const mappedStories = await Promise.all(
-        response.data.map(async (singleStory) => await storyMapper(singleStory)),
+        response.listStory.map(async (singleStory) => await storyMapper(singleStory)),
       );
       console.log(mappedStories); // for debugging purpose, remove after checking it
 

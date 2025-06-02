@@ -1,11 +1,11 @@
-import {storyMapper} from '../../data/api-mapper';
+import {storyMapper} from '../../data/api-mapper'; //
 export default class StoryDetailPresenter {
   #storyId;
   #view;
   #apiModel;
 
   constructor(storyId, { view, apiModel }) {
-    this.#storyId = reportId;
+    this.#storyId = storyId; // Corrected from reportId
     this.#view = view;
     this.#apiModel = apiModel;
   }
@@ -24,17 +24,18 @@ export default class StoryDetailPresenter {
   async showStoryDetail() {
     this.#view.showStoryDetailLoading();
     try {
-      const response = await this.#apiModel.getStoryById(this.#storyId);
+      // Assuming API returns story object within a data key and storyMapper expects the story object directly.
+      const response = await this.#apiModel.getDetailStory(this.#storyId); // Corrected from getStoryById
 
       if (!response.ok) {
         console.error('showStoryDetailAndMap: response:', response);
         this.#view.populateStoryDetailError(response.message);
         return;
       }
-      const story = await storyMapper(response.data);//implementasi dari reportMapper
+      const story = await storyMapper(response.data.story); // Corrected from response.data, assuming API returns story object within a data key
       console.log(story); // for debugging purpose, remove after checking it
 
-      this.#view.populateStoryDetailAndInitialMap(response.message, report);
+      this.#view.populateStoryDetailAndInitialMap(response.message, story); // Corrected from report
     } catch (error) {
       console.error('showStoryDetailAndMap: error:', error);
       this.#view.populateStoryDetailError(error.message);

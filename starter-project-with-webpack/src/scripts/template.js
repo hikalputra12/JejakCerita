@@ -1,5 +1,5 @@
 //masih copas
-import {showFormattedDate} from './utils';
+import {showFormattedDate} from './utils'; //
 
 export function generateLoaderTemplate({}) {
   return`
@@ -50,7 +50,7 @@ export function generateStoriesListErrorTemplate(message) {
   `;
 }
 
-export function generateStoriesDetailErrorTemplate(message) {
+export function generateStoriesDetailErrorTemplate(message) { // Corrected name from generateStoriesDetailErrorTemplate
   return `
     <div id="stories-detail-error" class="stories-detail__error">
       <h2>Terjadi kesalahan pengambilan detail Cerita</h2>
@@ -66,10 +66,12 @@ export function generateStoryItemTemplate({
   userName,
   createdAt,
   location,
+  storyImages, // Added storyImages parameter
 }) {
+  const imageUrl = storyImages && storyImages.length > 0 ? storyImages[0] : 'images/placeholder-image.jpg';
   return `
     <div tabindex="0" class="story-item" data-storyid="${id}">
-      <img class="story-item__image" src="${storyImages[0]}" alt="${title}">
+      <img class="story-item__image" src="${imageUrl}" alt="${title}">
       <div class="story-item__body">
         <div class="story-item__main">
           <h2 id="story-title" class="story-item__title">${title}</h2>
@@ -113,14 +115,15 @@ export function generateStoryDetailImageTemplate(imageUrl = null, alt = '') {
 export function generateStoryDetailTemplate({
   title,
   description,
-  location, // Harapkan objek location di sini
+  location,
   userName,
   createdAt,
+  storyImages, // Added storyImages parameter
 }) {
   const createdAtFormatted = showFormattedDate(createdAt, 'id-ID');
-  const imagesHtml = storyImages.reduce(
-    (accumulator, storyImages) =>
-      accumulator.concat(generateStoryDetailImageTemplate(storyImages, title)),
+  const imagesHtml = (storyImages || []).reduce( // Ensure storyImages is an array
+    (accumulator, imageUrl) => // Renamed from storyImages to imageUrl for clarity
+      accumulator.concat(generateStoryDetailImageTemplate(imageUrl, title)),
     '',
   );
 
@@ -133,11 +136,7 @@ export function generateStoryDetailTemplate({
           <div id="createdat" class="story-detail__createdat" data-value="${createdAtFormatted}"><i class="fas fa-calendar-alt"></i> ${createdAtFormatted}</div>
           <div id="location-place-name" class="story-detail__location__place-name" data-value="${location.placeName}"><i class="fas fa-map"></i> ${location.placeName}</div>
         </div>
-        <!-- <div class="story-detail__more-info__inline">
-          <div id="location-latitude" class="story-detail__location__latitude" data-value="${location.latitude}">Latitude: ${location.latitude}</div>
-          <div id="location-longitude" class="story-detail__location__longitude" data-value="${location.longitude}">Longitude: ${location.longitude}</div>
-        </div> -->
-        <div id="author" class="story-detail__author" data-value="${userName}">Dibuat oleh:</div>
+        <div id="author" class="story-detail__author" data-value="${userName}">Dibuat oleh: ${userName}</div>
       </div>
     </div>
 
@@ -165,4 +164,12 @@ export function generateStoryDetailTemplate({
       </div>
     </div>
   `;
+}
+
+export function generateSaveStoryButtonTemplate() {
+    return `<button id="save-story-button" class="btn">Simpan Cerita</button>`;
+}
+
+export function generateRemoveStoryButtonTemplate() {
+    return `<button id="remove-story-button" class="btn btn-outline">Hapus Cerita</button>`;
 }

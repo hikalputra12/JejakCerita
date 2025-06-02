@@ -12,7 +12,8 @@ export default class LoginPresenter {
   async getLogin({ email, password }) {
     this.#view.showSubmitLoadingButton();
     try {
-      const response = await this.#model.getLogin({ email, password });
+      const response = await this.#model.loginUser({ email, password });
+
 
       if (!response.ok) {
         console.error('getLogin: response:', response);
@@ -20,9 +21,9 @@ export default class LoginPresenter {
         return;
       }
 
-      this.#authModel.putAccessToken(response.data.accessToken);
+      this.#authModel.putAccessToken(response.loginResult.token);
 
-      this.#view.loginSuccessfully(response.message, response.data);
+      this.#view.loginSuccessfully(response.message);
     } catch (error) {
       console.error('getLogin: error:', error);
       this.#view.loginFailed(error.message);

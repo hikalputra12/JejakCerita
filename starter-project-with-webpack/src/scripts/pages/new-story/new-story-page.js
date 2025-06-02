@@ -1,9 +1,9 @@
 import NewStoryPresenter from './new-story-presenter';
-import { convertBase64ToBlob } from '../../utils';
-import * as JejakCeritaAPI from '../../data/api';
-import { generateLoaderAbsoluteTemplate } from '../../templates';
-import Camera from '../../utils/camera';
-import Map from '../../utils/map';
+import { convertBase64ToBlob } from '../../utils'; // Assuming convertBase64ToBlob is in utils/index.js or a separate utils file
+import * as JejakCeritaAPI from '../../data/api'; //
+import { generateLoaderAbsoluteTemplate } from '../../template'; // Corrected import path
+import Camera from '../../utils/camera'; //
+import Map from '../../utils/map'; //
 
 
 export default class NewStoryPage {
@@ -20,7 +20,7 @@ export default class NewStoryPage {
       <section>
         <div class="new-story__header">
           <div class="container">
-            <h1 classstorynew-story__header__title">Buat Cerita Baru</h1>
+            <h1 class="storynew-story__header__title">Buat Cerita Baru</h1>
             <p class="new-story__header__description">
               Silakan buatlah cerita petualangan anda di bawah.<br>
             </p>
@@ -44,8 +44,6 @@ export default class NewStoryPage {
               </div>
               <div id="title-input-more-info">Pastikan judul cerita dibuat dengan jelas dan deskriptif dalam 1 kalimat.</div>
             </div>
-            <div class="form-control">
-  
             <div class="form-control">
               <label for="description-input" class="new-form__description__title">Keterangan</label>
   
@@ -125,9 +123,9 @@ export default class NewStoryPage {
   }
 
   async afterRender() {
-    this.#presenter = new NewPresenter({
+    this.#presenter = new NewStoryPresenter({ // Corrected from NewPresenter
       view: this,
-      model: CityCareAPI,
+      model: JejakCeritaAPI, // Corrected from CityCareAPI
     });
     this.#takenDocumentations = [];
 
@@ -160,7 +158,7 @@ export default class NewStoryPage {
     });
 
     document.getElementById('documentations-input-button').addEventListener('click', () => {
-      this.#form.elements.namedItem('documentations-input').click();
+      this.#form.elements.namedItem('documentations').click(); // Corrected to 'documentations'
     });
 
     const cameraContainer = document.getElementById('camera-container');
@@ -237,7 +235,11 @@ export default class NewStoryPage {
   async #addTakenPicture(image) {
     let blob = image;
 
-    if (image instanceof String) {
+    // This condition `image instanceof String` is problematic if camera.takePicture returns a Blob directly.
+    // If it's a Blob, no conversion is needed.
+    // If it's a base64 string, then convertBase64ToBlob is correct.
+    // Assuming camera.takePicture returns a Blob based on standard MediaStream API
+    if (typeof image === 'string' && image.startsWith('data:')) { // More robust check for base64 string
       blob = await convertBase64ToBlob(image, 'image/png');
     }
 

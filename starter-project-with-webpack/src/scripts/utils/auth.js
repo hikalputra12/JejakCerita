@@ -1,6 +1,8 @@
 import { getActiveRoute } from '../routes/url-parser';
 import { CONFIG } from '../config';
 
+const ACCESS_TOKEN_KEY = 'accessToken';
+
 export function getAccessToken() {
   try {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
