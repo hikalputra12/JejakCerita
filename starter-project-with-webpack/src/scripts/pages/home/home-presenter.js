@@ -1,0 +1,49 @@
+import { storyMapper } from '../../data/api-mapper';
+export default class HomePresenter {
+  #view;
+  #model;
+
+  constructor({ view, model }) {
+    this.#view = view;
+    this.#model = model;
+  }
+
+  async showStoriesListMap() {
+    this.#view.showMapLoading();
+    try {
+      await this.#view.initialMap();
+    } catch (error) {
+      console.error('showStoriesListMap: error:', error);
+    } finally {
+      this.#view.hideMapLoading();
+    }
+  }
+
+  async initialGalleryAndMap() {
+    this.#view.showLoading();
+    try {
+      await this.showStoriesListMap();
+
+      const response = await this.#model.getAllStories();
+
+      if (!response.ok) {
+        console.error('initialGalleryAndMap: response:', response);
+        this.#view.populateStoriesListError(response.message);
+        return;
+      }
+      // Map setiap story dalam array response.data untuk mendapatkan placeName
+      const mappedStories = await Promise.all(
+        response.data.map(async (singleStory) => await storyMapper(singleStory)),
+      );
+      console.log(mappedStories); // for debugging purpose, remove after checking it
+
+      // Teruskan data laporan yang sudah dimapping ke view
+      this.#view.populateStoriesList(response.message, mappedStories);
+    } catch (error) {
+      console.error('initialGalleryAndMap: error:', error);
+      this.#view.populateStoriesListError(error.message);
+    } finally {
+      this.#view.hideLoading();
+    }
+  }
+}
