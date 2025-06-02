@@ -7,7 +7,8 @@ import {
 } from '../../templates';
 import { createCarousel } from '../../utils';
 import StoryDetailPresenter from './story-detail-presenter';
-import { parseActivePathname } from '../../routes/url-parser';
+import StoryDetailPresenter from './story-detail'; // Corrected import
+import { parseActivePathname } from '../../routes/url-parser'; // Corrected import
 import Map from '../../utils/map';
 import * as StoryAPI from '../../data/api';
 
@@ -30,13 +31,13 @@ export default class StoryDetailPage {
   async afterRender() {
     this.#presenter = new StoryDetailPresenter(parseActivePathname().id, {
       view: this,
-      apiModel: JejakCeritaAPI,
+      apiModel: StoryAPI, // Corrected to use imported StoryAPI
     });
 
-    this.#setupForm();
+    // this.#setupForm(); // Removed or implement if a form exists and needs setup
 
     this.#presenter.showStoryDetail();
-    this.#presenter.getCommentsList();
+    // this.#presenter.getCommentsList(); // Removed as getCommentsList is not in StoryDetailPresenter
   }
 
   async populateStoryDetailAndInitialMap(message, story) {
@@ -63,7 +64,7 @@ export default class StoryDetailPage {
   }
     // Actions buttons
     this.#presenter.showSaveButton();
-    this.addNotifyMeEventListener();
+    // this.addNotifyMeEventListener(); // Removed as addNotifyMeEventListener is not defined
   }
 
   populateStoryDetailError(message) {
@@ -76,10 +77,11 @@ export default class StoryDetailPage {
     });
   }
 
-
+  /*
   clearForm() {
     this.#form.reset();
   }
+  */
 
   renderSaveButton() {
     document.getElementById('save-actions-container').innerHTML =
@@ -109,6 +111,7 @@ export default class StoryDetailPage {
     document.getElementById('map-loading-container').innerHTML = '';
   }
 
+  /*
   showSubmitLoadingButton() {
     document.getElementById('submit-button-container').innerHTML = `
       <button class="btn" type="submit" disabled>
@@ -122,4 +125,5 @@ export default class StoryDetailPage {
       <button class="btn" type="submit">Tanggapi</button>
     `;
   }
+  */
 }

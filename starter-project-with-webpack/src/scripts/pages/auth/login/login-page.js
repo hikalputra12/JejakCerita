@@ -4,6 +4,9 @@ import * as AuthModel from '../../../utils/auth';
 
 export default class LoginPage {
   #presenter = null;
+  #loginForm = null;
+  #submitButton = null;
+  #originalSubmitButtonText = '';
 
   async render() {
     return `
@@ -41,20 +44,26 @@ export default class LoginPage {
   async afterRender() {
     this.#presenter = new LoginPresenter({
       view: this,
-      model: JejakCeritaAPI,
+      model: JejakCerita, // Corrected: JejakCeritaAPI to JejakCerita
       authModel: AuthModel,
     });
 
+    this.#loginForm = document.getElementById('login-form');
+    // Assuming the submit button is the one inside the 'submit-button-container'
+    // A more robust selector or a direct ID on the button would be even better.
+    this.#submitButton = this.#loginForm.querySelector('#submit-button-container button');
+    if (this.#submitButton) {
+      this.#originalSubmitButtonText = this.#submitButton.innerHTML;
+    }
     this.#setupForm();
   }
 
   #setupForm() {
-    document.getElementById('login-form').addEventListener('submit', async (event) => {
+    this.#loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-
       const data = {
-        email: document.getElementById('email-input').value,
-        password: document.getElementById('password-input').value,
+        email: this.#loginForm.elements.email.value,
+        password: this.#loginForm.elements.password.value,
       };
       await this.#presenter.getLogin(data);
     });
@@ -68,20 +77,23 @@ export default class LoginPage {
   }
 
   loginFailed(message) {
+    // Consider replacing alert with an inline message for better UX
     alert(message);
   }
 
   showSubmitLoadingButton() {
-    document.getElementById('submit-button-container').innerHTML = `
-      <button class="btn" type="submit" disabled>
-        <i class="fas fa-spinner loader-button"></i> Masuk
-      </button>
-    `;
+    if (this.#submitButton) {
+      this.#submitButton.disabled = true;
+      this.#submitButton.innerHTML = `
+        <i class="fas fa-spinner fa-spin loader-button"></i> Masuk
+      `; // Added fa-spin for animation
+    }
   }
 
   hideSubmitLoadingButton() {
-    document.getElementById('submit-button-container').innerHTML = `
-      <button class="btn" type="submit">Masuk</button>
-    `;
+    if (this.#submitButton) {
+      this.#submitButton.disabled = false;
+      this.#submitButton.innerHTML = this.#originalSubmitButtonText;
+    }
   }
 }

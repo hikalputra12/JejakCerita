@@ -1,4 +1,4 @@
-import CONFIG from '../config';
+import { CONFIG } from '../config';
 
 const ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,

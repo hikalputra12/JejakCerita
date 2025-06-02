@@ -1,5 +1,5 @@
 import { getActiveRoute } from '../routes/url-parser';
-import { ACCESS_TOKEN_KEY } from '../config';
+import { CONFIG } from '../config';
 
 export function getAccessToken() {
   try {

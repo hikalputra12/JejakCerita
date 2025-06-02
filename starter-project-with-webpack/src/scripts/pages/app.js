@@ -32,20 +32,24 @@ export default class App {
     this.#drawerButton.addEventListener('click', () => {
       this.#drawerNavigation.classList.toggle('open');
     });
+    
+    // Close drawer when a link inside it is clicked
+    this.#drawerNavigation.addEventListener('click', (event) => {
+      const link = event.target.closest('a');
+      if (link && this.#drawerNavigation.contains(link)) {
+        this.#drawerNavigation.classList.remove('open');
+      }
+    });
 
+    // Close drawer when clicking outside of it
     document.body.addEventListener('click', (event) => {
       const isTargetInsideDrawer = this.#drawerNavigation.contains(event.target);
       const isTargetInsideButton = this.#drawerButton.contains(event.target);
+      const isDrawerOpen = this.#drawerNavigation.classList.contains('open');
 
-      if (!(isTargetInsideDrawer || isTargetInsideButton)) {
+      if (isDrawerOpen && !isTargetInsideDrawer && !isTargetInsideButton) {
         this.#drawerNavigation.classList.remove('open');
       }
-
-      this.#drawerNavigation.querySelectorAll('a').forEach((link) => {
-        if (link.contains(event.target)) {
-          this.#drawerNavigation.classList.remove('open');
-        }
-      });
     });
   }
 
@@ -79,10 +83,19 @@ export default class App {
 
   async renderPage() {
     const url = getActiveRoute();
-    const route = routes[url];
+    const routeHandler = routes[url];
 
-    // Get page instance
-    const page = route();
+    if (!routeHandler) {
+      console.error(`No route found for URL: ${url}`);
+      // Optionally, redirect to a 404 page or display a message
+      this.#content.innerHTML = '<h1>404 - Page Not Found</h1><p>Sorry, the page you are looking for does not exist.</p>';
+      // Ensure navigation is still set up correctly for the 404 view
+      this.#setupNavigationList();
+      scrollTo({ top: 0, behavior: 'instant' });
+      return;
+    }
+
+    const page = routeHandler();
 
     const transition = transitionHelper({
       updateDOM: async () => {
