@@ -56,7 +56,7 @@ export default class AboutPage {
           <div class="about-team-section">
             <div class="about-team-member-item">
               <div>
-                <img src="../foto-developer.jpg" alt="Foto Developer Utama">
+                <img src="../foto-developer.jpeg" alt="Foto Developer Utama">
                 <h3>Julianda Putra Mansur</h3>
                 <p class="team-member-role">Pengembang Utama</p>
                 <p class="team-member-bio">Berkomitmen untuk menciptakan pengalaman berbagi cerita yang mulus dan bermakna.</p>
