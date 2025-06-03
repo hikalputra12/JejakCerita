@@ -1,10 +1,9 @@
-//berkas untuk menentukan jalur rute
-import RegisterPage from '../pages/auth/register/register-page'; // Corrected path
-import LoginPage from '../pages/auth/login/login-page'; // Corrected path
-import HomePage from '../pages/home/home-page'; //
-import AboutPage from '../pages/about/about-page'; // Assuming this is the correct about page path
-import AddStoryPage from '../pages/new-story/new-story-page'; // Corrected path and name
-import DetailStoryPage from '../pages/story-detail/story-detail-presenter'; // Assuming this is the DetailStoryPage view
+import RegisterPage from '../pages/auth/register/register-page';
+import LoginPage from '../pages/auth/login/login-page'; 
+import HomePage from '../pages/home/home-page'; 
+import AboutPage from '../pages/about/about-page'; 
+import AddStoryPage from '../pages/new-story/new-story-page'; 
+import DetailStoryPage from '../pages/story-detail/story-detail-presenter'; 
 import { checkAuthenticatedRoute, checkUnauthenticatedRouteOnly } from '../utils/auth'; //
 
 const routes = {
@@ -12,7 +11,7 @@ const routes = {
   '/register': () => checkUnauthenticatedRouteOnly(new RegisterPage()),
 
   '/': () => checkAuthenticatedRoute(new HomePage()),
-  '/new': () => checkAuthenticatedRoute(new AddStoryPage()), // Changed to /new based on common practice for new entries
+  '/new': () => checkAuthenticatedRoute(new AddStoryPage()), 
   '/stories/:id': () => checkAuthenticatedRoute(new DetailStoryPage()),
   '/about': () => checkAuthenticatedRoute(new AboutPage()),
 };

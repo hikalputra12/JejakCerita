@@ -46,7 +46,6 @@ export default class RegisterPage {
       model: JejakCeritaAPI,
     });
 
-    // Setup only form submit, no global click event!
     this.#setupForm();
   }
 

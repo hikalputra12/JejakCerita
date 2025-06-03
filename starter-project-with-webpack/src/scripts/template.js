@@ -1,16 +1,15 @@
-//masih copas
-import {showFormattedDate} from './utils'; //
+import { showFormattedDate } from './utils';
 
 export function generateLoaderTemplate({}) {
-  return`
+  return `
   <div class="loader"></div>`;
 }
 
-export function generateLoaderAbsoluteTemplate(){
+export function generateLoaderAbsoluteTemplate() {
   return `<div class="loader loader-absolute"></div>`;
 }
 
-export function generateMainNavigationListTemplate(){
+export function generateMainNavigationListTemplate() {
   return `
   <li><a id="story-list-button" class="story-list-button" href="#/">Semua Cerita</a></li>
   <li><a id="about-page-button" class="about-page-button"  href="#/about">Tentang Jejak Cerita</a></li></li>`;
@@ -50,7 +49,7 @@ export function generateStoriesListErrorTemplate(message) {
   `;
 }
 
-export function generateStoriesDetailErrorTemplate(message) { // Corrected name from generateStoriesDetailErrorTemplate
+export function generateStoriesDetailErrorTemplate(message) {
   return `
     <div id="stories-detail-error" class="stories-detail__error">
       <h1>Terjadi kesalahan pengambilan detail Cerita</h1>
@@ -66,7 +65,7 @@ export function generateStoryItemTemplate({
   userName,
   createdAt,
   location,
-  storyImages, // Added storyImages parameter
+  storyImages,
 }) {
   const imageUrl = storyImages && storyImages.length > 0 ? storyImages[0] : 'images/placeholder-image.jpg';
   return `
@@ -116,11 +115,11 @@ export function generateStoryDetailTemplate({
   location,
   userName,
   createdAt,
-  storyImages, // Added storyImages parameter
+  storyImages,
 }) {
   const createdAtFormatted = showFormattedDate(createdAt, 'id-ID');
-  const imagesHtml = (storyImages || []).reduce( // Ensure storyImages is an array
-    (accumulator, imageUrl) => // Renamed from storyImages to imageUrl for clarity
+  const imagesHtml = (storyImages || []).reduce(
+    (accumulator, imageUrl) =>
       accumulator.concat(generateStoryDetailImageTemplate(imageUrl, userName)),
     '',
   );
@@ -151,7 +150,7 @@ export function generateStoryDetailTemplate({
           </div>
         </div>
         <div class="story-detail__body__map__container">
-          <h1 class="story-detail__map__title">Lokasi Cerita;
+          <h1 class="story-detail__map__title">Lokasi Cerita
           </h1>
           <div class="story-detail__map__container">
             <div id="map" class="story-detail__map"></div>
@@ -160,13 +159,6 @@ export function generateStoryDetailTemplate({
         </div>
       </div>
     </div>
+    <div id="save-actions-container" class="story-detail__save-actions-container"></div>
   `;
-}
-
-export function generateSaveStoryButtonTemplate() {
-    return `<button id="save-story-button" class="btn">Simpan Cerita</button>`;
-}
-
-export function generateRemoveStoryButtonTemplate() {
-    return `<button id="remove-story-button" class="btn btn-outline">Hapus Cerita</button>`;
 }

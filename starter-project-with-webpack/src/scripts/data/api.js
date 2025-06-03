@@ -1,4 +1,5 @@
 import { CONFIG } from '../config';
+import { getAccessToken } from '../utils/auth';
 
 const ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,
@@ -6,7 +7,7 @@ const ENDPOINTS = {
   ADD_NEW_STORY: `${CONFIG.BASE_URL}/stories`,
   ADD_NEW_STORY_WITH_GUEST_ACCOUNT: `${CONFIG.BASE_URL}/stories/guest`,
   GET_ALL_STORIES: `${CONFIG.BASE_URL}/stories`,
-  DETAIL_STORY: (id) => `${CONFIG.BASE_URL}/stories/${id}`, // Corrected to be a function that takes ID
+  DETAIL_STORY: (id) => `${CONFIG.BASE_URL}/stories/${id}`,
   SUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/subscribe`,
   UNSUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/unsubscribe`,
 };
@@ -53,12 +54,9 @@ export async function loginUser({ email, password }) {
   }
 }
 
-// Ensure getAccessToken is imported from auth.js as it's used here.
-import { getAccessToken } from '../utils/auth';
-
 export async function addNewStory(
   description,
-  storyImages, // Renamed from imagesStory for consistency
+  storyImages,
   latitude,
   longitude,
 ) {
@@ -66,11 +64,11 @@ export async function addNewStory(
     const accessToken = getAccessToken();
 
     const formData = new FormData();
-    formData.set('description', description); // Tetap menggunakan 'description'
-    formData.set('lat', latitude); // Mengubah 'latitude' menjadi 'lat'
-    formData.set('lon', longitude); // Mengubah 'longitude' menjadi 'lon'
-    storyImages.forEach((imageFile) => { // Renamed from evidenceImages for consistency, and added 'photo' for API field
-      formData.append('photo', imageFile); // API expects 'photo' for image files
+    formData.set('description', description);
+    formData.set('lat', latitude);
+    formData.set('lon', longitude);
+    storyImages.forEach((imageFile) => {
+      formData.append('photo', imageFile);
     });
 
     const fetchResponse = await fetch(ENDPOINTS.ADD_NEW_STORY, {
@@ -80,9 +78,8 @@ export async function addNewStory(
     });
     const json = await fetchResponse.json();
 
-    // Check if response is ok, otherwise return error explicitly
     if (!fetchResponse.ok) {
-        return { error: true, message: json.message || `HTTP error! Status: ${fetchResponse.status}` };
+      return { error: true, message: json.message || `HTTP error! Status: ${fetchResponse.status}` };
     }
 
     return {
@@ -119,9 +116,9 @@ export async function addNewStoryWithGuestAccount(storyData) {
   }
 }
 
-export async function getAllStories() { // Removed token parameter as it's fetched internally
+export async function getAllStories() {
   try {
-    const accessToken = getAccessToken(); // Ensure getAccessToken is imported or defined
+    const accessToken = getAccessToken();
 
     const fetchResponse = await fetch(ENDPOINTS.GET_ALL_STORIES, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -144,7 +141,7 @@ export async function getAllStories() { // Removed token parameter as it's fetch
 
 export async function getDetailStory(id) {
   try {
-    const accessToken = getAccessToken(); // Ensure getAccessToken is imported or defined
+    const accessToken = getAccessToken();
 
     const fetchResponse = await fetch(ENDPOINTS.DETAIL_STORY(id), {
       headers: { Authorization: `Bearer ${accessToken}` },

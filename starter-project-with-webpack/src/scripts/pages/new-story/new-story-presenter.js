@@ -18,7 +18,7 @@ export default class NewStoryPresenter {
     }
   }
 
-  async postNewStory({ description, storyImages, latitude, longitude }) { // title removed
+  async postNewStory({ description, storyImages, latitude, longitude }) {
     this.#view.showSubmitLoadingButton();
     try {
       const response = await this.#model.addNewStory(
@@ -26,7 +26,7 @@ export default class NewStoryPresenter {
         storyImages,
         latitude,
         longitude,
-      ); // title removed from parameters
+      );
 
       if (!response.ok) {
         console.error('postNewStory: response:', response);

@@ -44,13 +44,11 @@ export default class LoginPage {
   async afterRender() {
     this.#presenter = new LoginPresenter({
       view: this,
-      model: JejakCerita, // Corrected: JejakCeritaAPI to JejakCerita
+      model: JejakCerita,
       authModel: AuthModel,
     });
 
     this.#loginForm = document.getElementById('login-form');
-    // Assuming the submit button is the one inside the 'submit-button-container'
-    // A more robust selector or a direct ID on the button would be even better.
     this.#submitButton = this.#loginForm.querySelector('#submit-button-container button');
     if (this.#submitButton) {
       this.#originalSubmitButtonText = this.#submitButton.innerHTML;
@@ -71,13 +69,10 @@ export default class LoginPage {
 
   loginSuccessfully(message) {
     console.log(message);
-
-    // Redirect
     location.hash = '/';
   }
 
   loginFailed(message) {
-    // Consider replacing alert with an inline message for better UX
     alert(message);
   }
 
@@ -86,7 +81,7 @@ export default class LoginPage {
       this.#submitButton.disabled = true;
       this.#submitButton.innerHTML = `
         <i class="fas fa-spinner fa-spin loader-button"></i> Masuk
-      `; // Added fa-spin for animation
+      `;
     }
   }
 

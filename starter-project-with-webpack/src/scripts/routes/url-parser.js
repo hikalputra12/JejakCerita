@@ -1,4 +1,3 @@
-//ekstrak path name
 function extractPathnameSegments(path) {
   const splitUrl = path.split('/');
 

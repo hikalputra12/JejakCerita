@@ -1,9 +1,9 @@
 import NewStoryPresenter from './new-story-presenter';
-import { convertBase64ToBlob } from '../../utils'; // Assuming convertBase64ToBlob is in utils/index.js or a separate utils file
-import * as JejakCeritaAPI from '../../data/api'; //
-import { generateLoaderAbsoluteTemplate } from '../../template'; // Corrected import path
-import Camera from '../../utils/camera'; //
-import Map from '../../utils/map'; //
+import { convertBase64ToBlob } from '../../utils';
+import * as JejakCeritaAPI from '../../data/api';
+import { generateLoaderAbsoluteTemplate } from '../../template';
+import Camera from '../../utils/camera';
+import Map from '../../utils/map';
 
 
 export default class NewStoryPage {
@@ -12,8 +12,8 @@ export default class NewStoryPage {
   #camera;
   #isCameraOpen = false;
   #takenDocumentations = [];
-  #map = null; //membuat peta baru
-  #draggableMarker = null; // Deklarasikan draggableMarker sebagai properti kelas
+  #map = null;
+  #draggableMarker = null;
 
   async render() {
     return `
@@ -27,13 +27,13 @@ export default class NewStoryPage {
           </div>
         </div>
       </section>
-  
+ 
       <section class="container">
         <div class="new-form__container">
           <form id="new-form" class="new-form">
             <div class="form-control">
               <label for="description-input" class="new-form__description__title">Maukkan Cerita Anda</label>
-  
+ 
               <div class="new-form__description__container">
                 <textarea
                   id="description-input"
@@ -45,7 +45,7 @@ export default class NewStoryPage {
             <div class="form-control">
               <label for="documentations-input" class="new-form__documentations__title">Dokumentasi</label>
               <div id="documentations-more-info">Anda dapat menyertakan foto sebagai dokumentasi.</div>
-  
+ 
               <div class="new-form__documentations__container">
                 <div class="new-form__documentations__buttons">
                   <button id="documentations-input-button" class="btn btn-outline" type="button">
@@ -70,7 +70,7 @@ export default class NewStoryPage {
                     Video stream not available.
                   </video>
                   <canvas id="camera-canvas" class="new-form__camera__canvas"></canvas>
-  
+ 
                   <div class="new-form__camera__tools">
                     <select id="camera-select"></select>
                     <div class="new-form__camera__tools_buttons">
@@ -85,7 +85,7 @@ export default class NewStoryPage {
             </div>
             <div class="form-control">
               <div class="new-form__location__title">Lokasi</div>
-  
+ 
               <div class="new-form__location__container">
                 <div class="new-form__location__map__container">
                   <div id="map" class="new-form__location__map"></div>
@@ -110,14 +110,14 @@ export default class NewStoryPage {
   }
 
   async afterRender() {
-    this.#presenter = new NewStoryPresenter({ // Corrected from NewPresenter
+    this.#presenter = new NewStoryPresenter({
       view: this,
-      model: JejakCeritaAPI, // Corrected from CityCareAPI
+      model: JejakCeritaAPI,
     });
     this.#takenDocumentations = [];
 
     this.#setupForm();
-    await this.#presenter.showNewFormMap(); // Panggil setelah setupForm agar #form ada
+    await this.#presenter.showNewFormMap();
   }
 
   #setupForm() {
@@ -144,7 +144,7 @@ export default class NewStoryPage {
     });
 
     document.getElementById('documentations-input-button').addEventListener('click', () => {
-      this.#form.elements.namedItem('documentations').click(); // Corrected to 'documentations'
+      this.#form.elements.namedItem('documentations').click();
     });
 
     const cameraContainer = document.getElementById('camera-container');
@@ -167,21 +167,18 @@ export default class NewStoryPage {
       });
   }
 
-  //membuat pera baru
   async initialMap() {
     this.#map = await Map.build('#map', {
       zoom: 15,
       locate: true,
     });
 
-    // Preparing marker for select coordinate
     const centerCoordinate = this.#map.getCenter();
-    // Inisialisasi input dengan koordinat awal
     this.#updateLatLngInput(centerCoordinate.latitude, centerCoordinate.longitude);
 
     this.#draggableMarker = this.#map.addMarker(
       [centerCoordinate.latitude, centerCoordinate.longitude],
-      { draggable: true, autoPan: true }, // Gunakan boolean true, bukan string 'true'
+      { draggable: true, autoPan: true },
     );
 
     this.#draggableMarker.addEventListener('move', (event) => {
@@ -221,11 +218,7 @@ export default class NewStoryPage {
   async #addTakenPicture(image) {
     let blob = image;
 
-    // This condition `image instanceof String` is problematic if camera.takePicture returns a Blob directly.
-    // If it's a Blob, no conversion is needed.
-    // If it's a base64 string, then convertBase64ToBlob is correct.
-    // Assuming camera.takePicture returns a Blob based on standard MediaStream API
-    if (typeof image === 'string' && image.startsWith('data:')) { // More robust check for base64 string
+    if (typeof image === 'string' && image.startsWith('data:')) {
       blob = await convertBase64ToBlob(image, 'image/png');
     }
 
@@ -259,7 +252,6 @@ export default class NewStoryPage {
           console.log(`Picture with id ${pictureId} was not found`);
         }
 
-        // Updating taken pictures
         this.#populateTakenPictures();
       }),
     );
@@ -270,12 +262,10 @@ export default class NewStoryPage {
       return picture.id == id;
     });
 
-    // Check if founded selectedPicture is available
     if (!selectedPicture) {
       return null;
     }
 
-    // Deleting selected selectedPicture from takenPictures
     this.#takenDocumentations = this.#takenDocumentations.filter((picture) => {
       return picture.id != selectedPicture.id;
     });
@@ -287,7 +277,6 @@ export default class NewStoryPage {
     console.log(message);
     this.clearForm();
 
-    // Redirect page
     location.hash = '/';
   }
 

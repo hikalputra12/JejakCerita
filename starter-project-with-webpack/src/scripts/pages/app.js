@@ -4,8 +4,8 @@ import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
   generateUnauthenticatedNavigationListTemplate,
-} from '../template'; // Corrected import path from '../templates' to '../template'
-import { setupSkipToContent, transitionHelper } from '../utils'; // Added imports for setupSkipToContent and transitionHelper
+} from '../template';
+import { setupSkipToContent, transitionHelper } from '../utils';
 import { getAccessToken, getLogout } from '../utils/auth';
 
 export default class App {
@@ -32,8 +32,7 @@ export default class App {
     this.#drawerButton.addEventListener('click', () => {
       this.#drawerNavigation.classList.toggle('open');
     });
-    
-    // Close drawer when a link inside it is clicked
+
     this.#drawerNavigation.addEventListener('click', (event) => {
       const link = event.target.closest('a');
       if (link && this.#drawerNavigation.contains(link)) {
@@ -41,7 +40,6 @@ export default class App {
       }
     });
 
-    // Close drawer when clicking outside of it
     document.body.addEventListener('click', (event) => {
       const isTargetInsideDrawer = this.#drawerNavigation.contains(event.target);
       const isTargetInsideButton = this.#drawerButton.contains(event.target);
@@ -58,7 +56,6 @@ export default class App {
     const navListMain = this.#drawerNavigation.querySelector('.navigation-drawer__navlist-main');
     const navList = this.#drawerNavigation.querySelector('.navigation-drawer__navlist');
 
-    // User not log in
     if (!isLogin || !navListMain || !navList) {
       navListMain.innerHTML = '';
       navList.innerHTML = generateUnauthenticatedNavigationListTemplate();
@@ -69,14 +66,13 @@ export default class App {
     navList.innerHTML = generateAuthenticatedNavigationListTemplate();
 
     const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) { // Ensure button exists before adding listener
+    if (logoutButton) {
       logoutButton.addEventListener('click', (event) => {
         event.preventDefault();
 
         if (confirm('Apakah Anda yakin ingin keluar?')) {
           getLogout();
 
-          // Redirect
           location.hash = '/login';
         }
       });
@@ -89,24 +85,22 @@ export default class App {
 
     if (!routeHandler) {
       console.error(`No route found for URL: ${url}`);
-      // Optionally, redirect to a 404 page or display a message
       this.#content.innerHTML = '<h1>404 - Page Not Found</h1><p>Sorry, the page you are looking for does not exist.</p>';
-      // Ensure navigation is still set up correctly for the 404 view
       this.#setupNavigationList();
       scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
 
     const page = routeHandler();
-    if (!page) { // Handle case where route handler returns null (e.g., due to auth check)
-        return;
+    if (!page) {
+      return;
     }
 
     const transition = transitionHelper({
       updateDOM: async () => {
         this.#content.innerHTML = await page.render();
-        if (page.afterRender) { // Ensure afterRender exists
-            page.afterRender();
+        if (page.afterRender) {
+          page.afterRender();
         }
       },
     });

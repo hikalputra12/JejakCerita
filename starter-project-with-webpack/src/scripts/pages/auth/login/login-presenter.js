@@ -14,7 +14,6 @@ export default class LoginPresenter {
     try {
       const response = await this.#model.loginUser({ email, password });
 
-
       if (!response.ok) {
         console.error('getLogin: response:', response);
         this.#view.loginFailed(response.message);

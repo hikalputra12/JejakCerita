@@ -1,4 +1,5 @@
 import { storyMapper } from '../../data/api-mapper';
+
 export default class HomePresenter {
   #view;
   #model;
@@ -31,13 +32,12 @@ export default class HomePresenter {
         this.#view.populateStoriesListError(response.message);
         return;
       }
-      // Map setiap story dalam array response.listStory untuk mendapatkan placeName
+
       const mappedStories = await Promise.all(
         response.listStory.map(async (singleStory) => await storyMapper(singleStory)),
       );
-      console.log(mappedStories); // for debugging purpose, remove after checking it
+      console.log(mappedStories);
 
-      // Teruskan data laporan yang sudah dimapping ke view
       this.#view.populateStoriesList(response.message, mappedStories);
     } catch (error) {
       console.error('initialGalleryAndMap: error:', error);
