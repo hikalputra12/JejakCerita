@@ -1,6 +1,5 @@
-/* responsives.css */
-@media (max-width: 768px) {
-  .stories-list__map {
-    height: 250px; /* Kurangi tinggi peta untuk layar kecil */
+@media (min-width: 1100px) {
+  .stories-list {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

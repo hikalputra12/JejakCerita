@@ -64,11 +64,11 @@ body {
 }
 
 .container {
-  padding-inline: 32px;
-  margin-inline: auto;
-  max-width: 1300px;
+  padding-inline: 0;
+  margin-inline: 0;
+  max-width: none;
+  width: 100%;
 }
-
 a,
 button {
   min-height: 44px;
@@ -246,8 +246,12 @@ i.loader-button {
 
 /* HEADER */
 header {
+  display: flex;
+  justify-content: space-between;/*belum*/
+  align-items: center;
+  align-content: center;
+  overflow: auto;
   background-color: #ffffff;
-
   position: sticky;
   inset-block-start: 0;
   box-shadow: 0 1px 4px 0 #00000055;
@@ -267,7 +271,7 @@ header {
 }
 
 .brand-name__link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
 
@@ -278,7 +282,10 @@ header {
 }
 
 .brand-name__link__image {
-  width: 35px;
+  width: 55px;
+}
+.brand-name__link__text{
+  font-size:1.5rem;
 }
 
 .navigation-drawer {
@@ -394,6 +401,9 @@ header {
   max-width: 400px;
   height: 100%;
   margin-inline: auto;
+  box-shadow: 0px 0px 6px -1px rgba(95,67,178,0.79);
+  -webkit-box-shadow: 0px 0px 6px -1px rgba(95,67,178,0.79);
+  -moz-box-shadow: 0px 0px 6px -1px rgba(95,67,178,0.79);
 }
 
 .register__title,
@@ -1127,6 +1137,8 @@ header {
 /* FOOTER */
 footer {
   margin-block-start: 50px;
+  box-shadow: 0 1px 4px 0 #00000055;
+  padding: 5px;
 }
 
 .footer-content {
@@ -1160,4 +1172,10 @@ footer {
 .story-detail__author::after {
   content: attr(data-value);
   color: #09090b;
+}
+/* Tambahkan ini di akhir file CSS Anda */
+.full-width {
+  max-width: none !important;
+  width: 100% !important;
+  padding-inline: 0 !important;
 }
