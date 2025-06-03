@@ -396,6 +396,7 @@ header {
 
 .register-form-container,
 .login-form-container {
+
   max-width: 400px;
   height: 100%;
   margin-inline: auto;
@@ -408,6 +409,8 @@ header {
 .login__title {
   text-align: center;
   margin-block: 30px 20px;
+  padding:20px;
+
 }
 
 .register-form,

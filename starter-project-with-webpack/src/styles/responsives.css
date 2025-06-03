@@ -44,10 +44,6 @@
     align-items: center;
   }
 
-  .register-form,
-  .login-form {
-    border: 1px solid #d4d4d4;
-  }
 
   .story-detail__images {
     height: 400px;
