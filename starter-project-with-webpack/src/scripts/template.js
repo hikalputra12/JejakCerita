@@ -13,7 +13,7 @@ export function generateLoaderAbsoluteTemplate(){
 export function generateMainNavigationListTemplate(){
   return `
   <li><a id="story-list-button" class="story-list-button" href="#/">Semua Cerita</a></li>
-  <li><a id="bookmark-button" class="bookmark-button" href="#/bookmark">Cerita Tersimpan</a></li>`;
+  <li><a id="about-page-button" class="about-page-button"  href="#/about">Tentang Jejak Cerita</a></li></li>`;
 }
 
 export function generateUnauthenticatedNavigationListTemplate() {
