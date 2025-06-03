@@ -35,7 +35,7 @@ export function generateAuthenticatedNavigationListTemplate() {
 export function generateStoriesListEmptyTemplate() {
   return `
     <div id="stories-list-empty" class="stories-list__empty">
-      <h2>Tidak ada Cerita yang tersedia</h2>
+      <h1>Tidak ada Cerita yang tersedia</h1>
       <p>Saat ini, tidak ada Cerita yang dapat ditampilkan.</p>
     </div>
   `;
@@ -44,7 +44,7 @@ export function generateStoriesListEmptyTemplate() {
 export function generateStoriesListErrorTemplate(message) {
   return `
     <div id="stories-list-error" class="stories-list__error">
-      <h2>Terjadi kesalahan pengambilan Semua Cerita</h2>
+      <h1>Terjadi kesalahan pengambilan Semua Cerita</h1>
       <p>${message ? message : 'Gunakan jaringan lain atau laporkan error ini.'}</p>
     </div>
   `;
@@ -53,7 +53,7 @@ export function generateStoriesListErrorTemplate(message) {
 export function generateStoriesDetailErrorTemplate(message) { // Corrected name from generateStoriesDetailErrorTemplate
   return `
     <div id="stories-detail-error" class="stories-detail__error">
-      <h2>Terjadi kesalahan pengambilan detail Cerita</h2>
+      <h1>Terjadi kesalahan pengambilan detail Cerita</h1>
       <p>${message ? message : 'Gunakan jaringan lain atau laporkan error ini.'}</p>
     </div>
   `;
@@ -71,10 +71,9 @@ export function generateStoryItemTemplate({
   const imageUrl = storyImages && storyImages.length > 0 ? storyImages[0] : 'images/placeholder-image.jpg';
   return `
     <div tabindex="0" class="story-item" data-storyid="${id}">
-      <img class="story-item__image" src="${imageUrl}" alt="${title}">
+      <img class="story-item__image" src="${imageUrl}" alt="foto dari cerita ${userName}">
       <div class="story-item__body">
         <div class="story-item__main">
-          <h2 id="story-title" class="story-item__title">${title}</h2>
           <div class="story-item__more-info">
             <div class="story-item__createdat">
               <i class="fas fa-calendar-alt"></i> ${showFormattedDate(createdAt, 'id-ID')}
@@ -113,7 +112,6 @@ export function generateStoryDetailImageTemplate(imageUrl = null, alt = '') {
 }
 
 export function generateStoryDetailTemplate({
-  title,
   description,
   location,
   userName,
@@ -123,20 +121,18 @@ export function generateStoryDetailTemplate({
   const createdAtFormatted = showFormattedDate(createdAt, 'id-ID');
   const imagesHtml = (storyImages || []).reduce( // Ensure storyImages is an array
     (accumulator, imageUrl) => // Renamed from storyImages to imageUrl for clarity
-      accumulator.concat(generateStoryDetailImageTemplate(imageUrl, title)),
+      accumulator.concat(generateStoryDetailImageTemplate(imageUrl, userName)),
     '',
   );
 
   return `
     <div class="story-detail__header">
-      <h1 id="title" class="story-detail__title">${title}</h1>
-
       <div class="story-detail__more-info">
         <div class="story-detail__more-info__inline">
-          <div id="createdat" class="story-detail__createdat" data-value="${createdAtFormatted}"><i class="fas fa-calendar-alt"></i> ${createdAtFormatted}</div>
-          <div id="location-place-name" class="story-detail__location__place-name" data-value="${location.placeName}"><i class="fas fa-map"></i> ${location.placeName}</div>
+          <div id="createdat" class="story-detail__createdat" ><i class="fas fa-calendar-alt"></i> ${createdAtFormatted}</div>
+          <div id="location-place-name" class="story-detail__location__place-name" ><i class="fas fa-map"></i> ${location.placeName}</div>
         </div>
-        <div id="author" class="story-detail__author" data-value="${userName}">Dibuat oleh: ${userName}</div>
+        <div id="author" class="story-detail__author" >Dibuat oleh: ${userName}</div>
       </div>
     </div>
 
@@ -149,13 +145,14 @@ export function generateStoryDetailTemplate({
     <div class="container">
       <div class="story-detail__body">
         <div class="story-detail__body__description__container">
-          <h2 class="story-detail__description__title">Informasi Lengkap</h2>
+          <h1 class="story-detail__description__title">Deskripsi Cerita</h1>
           <div id="description" class="story-detail__description__body">
             ${description}
           </div>
         </div>
         <div class="story-detail__body__map__container">
-          <h2 class="story-detail__map__title">Peta Lokasi</h2>
+          <h1 class="story-detail__map__title">Lokasi Cerita;
+          </h1>
           <div class="story-detail__map__container">
             <div id="map" class="story-detail__map"></div>
             <div id="map-loading-container"></div>

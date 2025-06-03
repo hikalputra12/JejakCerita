@@ -2,46 +2,67 @@
 import Map from '../utils/map'; //
  
 export async function storyMapper(story) {
-  let locationData = story.location;
+  // Location Mapping
+  // Initialize with defaults, then update if story has lat/lon
+  let mappedLatitude = 0;
+  let mappedLongitude = 0;
   let placeName = '';
-
-  // Memastikan locationData ada dan memiliki latitude serta longitude
-  if (locationData && typeof locationData.latitude === 'number' && typeof locationData.longitude === 'number') {
-    placeName = await Map.getPlaceNameByCoordinate(locationData.latitude, locationData.longitude); //
+ 
+  // Check for lat and lon directly on the story object
+  if (typeof story.lat === 'number' && typeof story.lon === 'number') {
+    mappedLatitude = story.lat;
+    mappedLongitude = story.lon;
+    try {
+      placeName = await Map.getPlaceNameByCoordinate(mappedLatitude, mappedLongitude);
+    } catch (error) {
+      console.error('Error fetching place name by coordinate:', error);
+      placeName = 'Gagal mengambil nama lokasi';
+    }
   } else {
-    // Jika data lokasi tidak ada atau tidak valid, berikan nilai default
-    locationData = {
-      latitude: 0,
-      longitude: 0,
-      placeName: 'Lokasi Tidak Diketahui',
-    };
-    placeName = locationData.placeName;
+    placeName = 'Lokasi Tidak Diketahui';
   }
-
-  // **PERBAIKAN YANG LEBIH ROBUST UNTUK DATA PENGGUNA**
-  let finalUser = {
-    id: story.userId || 'unknown', // Selalu berikan ID default atau dari story.userId
-    name: 'Pengguna Tidak Diketahui', // Selalu berikan nama default
+ 
+  const locationData = {
+    latitude: mappedLatitude,
+    longitude: mappedLongitude,
+    placeName: placeName,
   };
-
-  if (story.user && typeof story.user === 'object') {
-    // Jika story.user ada dan merupakan objek, gabungkan propertinya
-    // dan pastikan 'name' adalah string yang valid.
-    finalUser = {
-      ...story.user, // Gabungkan properti user yang sudah ada
-      name: typeof story.user.name === 'string' ? story.user.name : 'Pengguna Tidak Diketahui',
-    };
+ 
+  // User Mapping
+  // Handles story.user object if present, otherwise uses root story.name and story.userId
+  let finalUserId = 'unknown';
+  let finalUserName = 'Pengguna Tidak Diketahui';
+ 
+  if (story.user && typeof story.user === 'object') { // If story.user object exists
+    finalUserId = story.user.id || story.userId || 'unknown'; // Prioritize ID from story.user
+    finalUserName = (typeof story.user.name === 'string' && story.user.name.trim() !== '')
+      ? story.user.name
+      : 'Pengguna Tidak Diketahui';
+  } else { // Fallback to root properties if story.user is not an object
+    finalUserId = story.userId || 'unknown'; // Use story.userId from root if available
+    // Use story.name (root level) as user's name if available and it's a non-empty string
+    if (typeof story.name === 'string' && story.name.trim() !== '') {
+      finalUserName = story.name;
+    }
   }
-
-  // Memastikan storyImages selalu berupa array, bahkan jika story.photo tidak ada atau bukan array.
-  const storyImages = Array.isArray(story.photo) ? story.photo : [];
-
+ 
+  const finalUser = {
+    id: finalUserId,
+    name: finalUserName,
+  };
+ 
+  // Story Images Mapping
+  // Prioritizes story.photoUrl, then falls back to story.photo if it's an array
+  let storyImages = [];
+  if (story.photoUrl && typeof story.photoUrl === 'string') {
+    storyImages = [story.photoUrl];
+  } else if (Array.isArray(story.photo)) {
+    storyImages = story.photo;
+  }
+ 
   return {
     ...story, // Pertahankan properti story asli lainnya
-    location: {
-      ...locationData,
-      placeName: placeName,
-    },
+    location: locationData, // Tetapkan objek location yang sudah dimapping
     user: finalUser, // Tetapkan objek user yang sudah difinalisasi
     storyImages: storyImages,
   };

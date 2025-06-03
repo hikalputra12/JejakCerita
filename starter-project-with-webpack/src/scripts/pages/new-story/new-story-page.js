@@ -32,20 +32,7 @@ export default class NewStoryPage {
         <div class="new-form__container">
           <form id="new-form" class="new-form">
             <div class="form-control">
-              <label for="title-input" class="new-form__title__title">Judul Cerita</label>
-  
-              <div class="new-form__title__container">
-                <input
-                  id="title-input"
-                  name="title"
-                  placeholder="Masukkan judul cerita"
-                  aria-describedby="title-input-more-info"
-                >
-              </div>
-              <div id="title-input-more-info">Pastikan judul cerita dibuat dengan jelas dan deskriptif dalam 1 kalimat.</div>
-            </div>
-            <div class="form-control">
-              <label for="description-input" class="new-form__description__title">Keterangan</label>
+              <label for="description-input" class="new-form__description__title">Maukkan Cerita Anda</label>
   
               <div class="new-form__description__container">
                 <textarea
@@ -139,7 +126,6 @@ export default class NewStoryPage {
       event.preventDefault();
 
       const data = {
-        title: this.#form.elements.namedItem('title').value,
         description: this.#form.elements.namedItem('description').value,
         storyImages: this.#takenDocumentations.map((picture) => picture.blob),
         latitude: this.#form.elements.namedItem('latitude').value,

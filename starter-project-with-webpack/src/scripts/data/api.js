@@ -57,7 +57,6 @@ export async function loginUser({ email, password }) {
 import { getAccessToken } from '../utils/auth';
 
 export async function addNewStory(
-  title,
   description,
   storyImages, // Renamed from imagesStory for consistency
   latitude,
@@ -67,10 +66,9 @@ export async function addNewStory(
     const accessToken = getAccessToken();
 
     const formData = new FormData();
-    formData.set('title', title);
-    formData.set('description', description);
-    formData.set('latitude', latitude);
-    formData.set('longitude', longitude);
+    formData.set('description', description); // Tetap menggunakan 'description'
+    formData.set('lat', latitude); // Mengubah 'latitude' menjadi 'lat'
+    formData.set('lon', longitude); // Mengubah 'longitude' menjadi 'lon'
     storyImages.forEach((imageFile) => { // Renamed from evidenceImages for consistency, and added 'photo' for API field
       formData.append('photo', imageFile); // API expects 'photo' for image files
     });

@@ -32,7 +32,7 @@ export default class StoryDetailPresenter {
         this.#view.populateStoryDetailError(response.message);
         return;
       }
-      const story = await storyMapper(response.data.story); // Corrected from response.data, assuming API returns story object within a data key
+      const story = await storyMapper(response.story); // Corrected from response.data, assuming API returns story object within a data key
       console.log(story); // for debugging purpose, remove after checking it
 
       this.#view.populateStoryDetailAndInitialMap(response.message, story); // Corrected from report
