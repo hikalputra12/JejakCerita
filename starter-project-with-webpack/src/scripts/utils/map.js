@@ -1,38 +1,28 @@
-//masih copas
 import { map, tileLayer, marker, popup,icon,Icon,latLng } from 'leaflet';
-//mengimport marker agar kelihatan pada map
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { MAP_SERVICE_API_KEY } from '../config'; //import map service
  
 export default class Map {
-  #zoom = 5;//zoom awal //menjadi variabel yang private yang hanya bisa di gunakan di class Map
+  #zoom = 5;
   #map = null;
  
-  //digunakan untuk mendefinisikan metode (atau properti) yang milik kelas itu sendiri,
-  // juga kita tidak menggunakan constructor karena ridak berlaku pada synchronous process
   static isGeolocationAvailable() {
     return 'geolocation' in navigator;
   }
  
-  //metode untuk mendapatkan lokasi user saat ini 
-  //Praktik ini diinginkan agar kita mampu mendapatkan lokasi pengguna
   static getCurrentPosition(options = {}) {
     return new Promise((resolve, reject) => {
-      if (!Map.isGeolocationAvailable()) { //pertama mengecek apakah map geolocation ada atau tidak 
-        reject('Geolocation API unsupported'); //menampilkan pesan popup
+      if (!Map.isGeolocationAvailable()) { 
+        reject('Geolocation API unsupported'); 
         return;
       }
  
-      navigator.geolocation.getCurrentPosition(resolve, reject, options);//jika tidak maka akan mendapatkan lokasi saat ini
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
   }
  
-  /**
-   * Reference of using this static method:
-   * https://stackoverflow.com/questions/43431550/how-can-i-invoke-asynchronous-code-within-a-constructor
-   * */
   static async build(selector, options = {}) {
     if ('center' in options && options.center) {
       return new Map(selector, options);

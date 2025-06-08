@@ -3,7 +3,7 @@ import LoginPage from '../pages/auth/login/login-page';
 import HomePage from '../pages/home/home-page'; 
 import AboutPage from '../pages/about/about-page'; 
 import AddStoryPage from '../pages/new-story/new-story-page'; 
-import DetailStoryPage from '../pages/story-detail/story-detail-presenter'; 
+import DetailStoryPage from '../pages/story-detail/story-detail'; 
 import { checkAuthenticatedRoute, checkUnauthenticatedRouteOnly } from '../utils/auth'; //
 
 const routes = {

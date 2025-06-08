@@ -286,9 +286,7 @@ header {
 .brand-name__link__image {
   width: 55px;
 }
-.brand-name__link__text{
-  font-size:1.5rem;
-}
+
 
 .navigation-drawer {
   min-height: 100vh;
@@ -333,6 +331,7 @@ header {
   color: #141e16;
 
   cursor: pointer;
+  margin-left:5.3rem;
 }
 .navigation-drawer__navlist-main,
 .navigation-drawer__navlist {
@@ -392,6 +391,7 @@ header {
   text-align: center;
   font-size: 2.5rem;
   padding-block: 50px 40px;
+  color: var(--primary-color);
 }
 
 .register-form-container,
@@ -1075,4 +1075,31 @@ footer {
 }
 .story-detail__description__body{
   font-size: 1.5rem;
+}
+.login-register{
+  display: flex;
+  justify-content: center;
+  margin-left: 30rem;
+  gap:8px;
+  
+}
+#login-button {
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+#register-button {
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+.storynew-story__header__title {
+  color:rgb(255, 255, 255);
+}
+.new-story__header__description{
+  color:rgb(255, 255, 255);
 }

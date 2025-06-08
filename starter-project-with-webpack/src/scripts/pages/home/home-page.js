@@ -8,6 +8,7 @@ import HomePresenter from './home-presenter';
 import Map from '../../utils/map';
 import * as JejakCeritaAPI from '../../data/api';
 
+
 export default class HomePage {
   #presenter = null;
   #map = null;
@@ -42,18 +43,25 @@ export default class HomePage {
   }
 
   populateStoriesList(message, stories) {
+    console.log('populateStoriesList called. Map instance:', this.#map); // Log status peta
     if (stories.length <= 0) {
       this.populateStoriesListEmpty();
       return;
     }
 
     const html = stories.reduce((accumulator, story) => {
+      console.log('Attempting to add marker for story:', story);
       if (this.#map) {
         const coordinate = [story.location.latitude, story.location.longitude];
-        const markerOptions = { alt: story.title };
-        const popupOptions = { content: story.title };
-        this.#map.addMarker(coordinate, markerOptions, popupOptions);
+        if (coordinate[0] !== undefined && coordinate[1] !== undefined) {
+          const markerOptions = { alt: story.name  };
+          const popupOptions = { content: story.name + ' - ' + story.location.placeName };
+          this.#map.addMarker(coordinate, markerOptions, popupOptions);
+        } else {
+          console.warn('Skipping marker for story due to missing coordinates:', story.title, story.location);
+        }
       }
+
 
       return accumulator.concat(
         generateStoryItemTemplate({
@@ -77,10 +85,21 @@ export default class HomePage {
   }
 
   async initialMap() {
-    this.#map = await Map.build('#map', {
-      zoom: 13,
-      locate: true,
-    });
+    try {
+      this.#map = await Map.build('#map', {
+        zoom: 13,
+        locate: true,
+      });
+      if (!this.#map) {
+        console.error('HomePage.initialMap: Map.build did not return a valid map object.');
+      } else {
+        console.log('HomePage.initialMap: Map initialized successfully:', this.#map);
+      }
+    } catch (error) {
+      console.error('HomePage.initialMap: Error during Map.build:', error);
+      this.#map = null; // Pastikan #map null jika inisialisasi gagal
+      throw error; // Lempar ulang error agar bisa ditangkap oleh presenter
+    }
   }
 
   showMapLoading() {

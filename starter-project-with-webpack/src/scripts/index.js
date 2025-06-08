@@ -7,7 +7,6 @@ import 'leaflet/dist/leaflet.css';
 // Components
 import App from './pages/app';
 import Camera from './utils/camera';
-import { setupSkipToContent, transitionHelper } from './utils';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const app = new App({

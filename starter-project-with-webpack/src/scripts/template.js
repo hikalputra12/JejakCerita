@@ -17,15 +17,15 @@ export function generateMainNavigationListTemplate() {
 
 export function generateUnauthenticatedNavigationListTemplate() {
   return `
-    <li id="push-notification-tools" class="push-notification-tools"></li>
-    <li><a id="login-button" href="#/login">Login</a></li>
-    <li><a id="register-button" href="#/register">Register</a></li>
+  <div class="login-register">
+    <li><a id="login-button"  href="#/login">Login</a></li>
+    <li><a id="register-button"  href="#/register">Register</a></li>
+  </div>
   `;
 }
 
 export function generateAuthenticatedNavigationListTemplate() {
   return `
-    <li id="push-notification-tools" class="push-notification-tools"></li>
     <li><a id="new-story-button" class="btn new-story-button" href="#/new">Buat Cerita <i class="fas fa-plus"></i></a></li>
     <li><a id="logout-button" class="logout-button" href="#/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
   `;
@@ -150,8 +150,8 @@ export function generateStoryDetailTemplate({
           </div>
         </div>
         <div class="story-detail__body__map__container">
-          <h1 class="story-detail__map__title">Lokasi Cerita
-          </h1>
+          <h2 class="story-detail__map__title">Lokasi Cerita
+          </h2>
           <div class="story-detail__map__container">
             <div id="map" class="story-detail__map"></div>
             <div id="map-loading-container"></div>

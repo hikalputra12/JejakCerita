@@ -56,6 +56,9 @@
   .new-form__documentations__outputs {
     grid-template-columns: repeat(2, minmax(200px, 300px));
   }
+  .drawer-button{
+    margin-left:3.3rem;
+  }
 }
 
 @media screen and (width > 600px) {

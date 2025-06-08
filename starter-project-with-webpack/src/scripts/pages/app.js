@@ -5,7 +5,7 @@ import {
   generateMainNavigationListTemplate,
   generateUnauthenticatedNavigationListTemplate,
 } from '../template';
-import { setupSkipToContent, transitionHelper } from '../utils';
+import { setupSkipToContent, transitionHelper } from '../utils/index';
 import { getAccessToken, getLogout } from '../utils/auth';
 
 export default class App {
