@@ -1,6 +1,7 @@
 import { CONFIG } from '../config';
 import { getAccessToken } from '../utils/auth';
 
+
 const ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,
   LOGIN: `${CONFIG.BASE_URL}/login`,
@@ -169,7 +170,7 @@ export async function subscribePushNotification({ endpoint, keys: { p256dh, auth
     keys: { p256dh, auth },
   });
  
-  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE, {
+  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE_NOTIFICATION, { // Perbaikan di sini
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ export async function unsubscribePushNotification({ endpoint }) {
   const accessToken = getAccessToken();
   const data = JSON.stringify({ endpoint });
  
-  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE, {
+  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE_NOTIFICATION, { // Perbaikan di sini
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

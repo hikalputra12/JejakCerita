@@ -1,7 +1,6 @@
-
 import { convertBase64ToUint8Array } from './index';
 import { VAPID_PUBLIC_KEY } from '../config';
-import { subscribePushNotification } from '../data/api';
+import { subscribePushNotification, unsubscribePushNotification } from '../data/api'; // Import unsubscribePushNotification
 
 export function generateSubscribeOptions() {
   return {
@@ -90,5 +89,31 @@ export async function subscribe() {
  
     // Undo subscribe to push notification
     await pushSubscription.unsubscribe();
+  }
+}
+
+export async function unsubscribe() { // Tambahkan fungsi ini
+  const successUnsubscribeMessage = 'Berhasil berhenti berlangganan push notification.';
+  const failureUnsubscribeMessage = 'Gagal berhenti berlangganan push notification.';
+  try {
+    const pushSubscription = await getPushSubscription();
+    if (!pushSubscription) {
+      alert('Tidak berlangganan push notification.');
+      return;
+    }
+
+    const { endpoint } = pushSubscription.toJSON();
+    const response = await unsubscribePushNotification({ endpoint });
+    if (!response.ok) {
+      console.error('unsubscribe: response:', response);
+      alert(failureUnsubscribeMessage);
+      return;
+    }
+
+    await pushSubscription.unsubscribe();
+    alert(successUnsubscribeMessage);
+  } catch (error) {
+    console.error('unsubscribe: error:', error);
+    alert(failureUnsubscribeMessage);
   }
 }

@@ -8,7 +8,7 @@ import {
   generateUnsubscribeButtonTemplate,
 } from '../template';
 import { setupSkipToContent, transitionHelper,isServiceWorkerAvailable } from '../utils/index';
-import { isCurrentPushSubscriptionAvailable, subscribe } from '../utils/notification-helper';
+import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper'; // Import unsubscribe
 
 import { getAccessToken, getLogout } from '../utils/auth';
 
@@ -87,6 +87,11 @@ export default class App {
     const isSubscribed = await isCurrentPushSubscriptionAvailable();
     if (isSubscribed) {
       pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+      document.getElementById('unsubscribe-button').addEventListener('click', () => { // Tambahkan ini
+        unsubscribe().finally(() => { // Tambahkan ini
+          this.#setupPushNotification(); // Tambahkan ini
+        }); // Tambahkan ini
+      }); // Tambahkan ini
       return;
     }
     pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
@@ -96,6 +101,7 @@ export default class App {
       });
     });
   }
+
   async renderPage() {
     const url = getActiveRoute();
     const routeHandler = routes[url];
@@ -126,6 +132,7 @@ export default class App {
     transition.updateCallbackDone.then(() => {
       scrollTo({ top: 0, behavior: 'instant' });
       this.#setupNavigationList();
+ 
       if (isServiceWorkerAvailable()) {
         this.#setupPushNotification();
       }
