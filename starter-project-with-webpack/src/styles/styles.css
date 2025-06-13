@@ -451,8 +451,9 @@ header {
 .stories-list {
   display: grid;
   grid-template-columns: repeat(1, minmax(300px, 1fr));
-  gap: 20px 15px;
+  gap: 15px 15px;
   margin-block: 30px;
+  margin:30px;
 }
 
 .stories-list__empty,

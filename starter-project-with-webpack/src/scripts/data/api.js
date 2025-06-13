@@ -162,40 +162,45 @@ export async function getDetailStory(id) {
   }
 }
 
-export async function subscribeNotification(subscription, token) {
-  try {
-    const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE_NOTIFICATION, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(subscription),
-    });
-    const responseJson = await fetchResponse.json();
-    console.log('Subscribe Notification API Response:', responseJson);
-    return responseJson;
-  } catch (error) {
-    console.error('Error during subscribe notification API call:', error);
-    return { error: true, message: 'Network error during subscription. Please try again.' };
-  }
+export async function subscribePushNotification({ endpoint, keys: { p256dh, auth } }) {
+  const accessToken = getAccessToken();
+  const data = JSON.stringify({
+    endpoint,
+    keys: { p256dh, auth },
+  });
+ 
+  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: data,
+  });
+  const json = await fetchResponse.json();
+ 
+  return {
+    ...json,
+    ok: fetchResponse.ok,
+  };
 }
-
-export async function unsubscribeNotification(endpoint, token) {
-  try {
-    const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE_NOTIFICATION, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ endpoint }),
-    });
-    const responseJson = await fetchResponse.json();
-    console.log('Unsubscribe Notification API Response:', responseJson);
-    return responseJson;
-  } catch (error) {
-    console.error('Error during unsubscribe notification API call:', error);
-    return { error: true, message: 'Network error during unsubscription. Please try again.' };
-  }
+ 
+export async function unsubscribePushNotification({ endpoint }) {
+  const accessToken = getAccessToken();
+  const data = JSON.stringify({ endpoint });
+ 
+  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: data,
+  });
+  const json = await fetchResponse.json();
+ 
+  return {
+    ...json,
+    ok: fetchResponse.ok,
+  };
 }
