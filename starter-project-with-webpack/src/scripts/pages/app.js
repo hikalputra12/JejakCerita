@@ -1,3 +1,5 @@
+// File: src/scripts/pages/app.js
+
 import routes from '../routes/routes';
 import { getActiveRoute } from '../routes/url-parser';
 import {
@@ -8,7 +10,7 @@ import {
   generateUnsubscribeButtonTemplate,
 } from '../template';
 import { setupSkipToContent, transitionHelper,isServiceWorkerAvailable } from '../utils/index';
-import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper'; // Import unsubscribe
+import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper';
 
 import { getAccessToken, getLogout } from '../utils/auth';
 
@@ -82,16 +84,24 @@ export default class App {
       });
     }
   }
+
   async #setupPushNotification() {
     const pushNotificationTools = document.getElementById('push-notification-tools');
+
+    // TAMBAHKAN PEMERIKSAAN NULL DI SINI
+    if (!pushNotificationTools) {
+      console.warn("Elemen dengan ID 'push-notification-tools' tidak ditemukan. Melewati pengaturan notifikasi push.");
+      return; // Keluar dari fungsi jika elemen tidak ada
+    }
+
     const isSubscribed = await isCurrentPushSubscriptionAvailable();
     if (isSubscribed) {
       pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
-      document.getElementById('unsubscribe-button').addEventListener('click', () => { // Tambahkan ini
-        unsubscribe().finally(() => { // Tambahkan ini
-          this.#setupPushNotification(); // Tambahkan ini
-        }); // Tambahkan ini
-      }); // Tambahkan ini
+      document.getElementById('unsubscribe-button').addEventListener('click', () => {
+        unsubscribe().finally(() => {
+          this.#setupPushNotification();
+        });
+      });
       return;
     }
     pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();

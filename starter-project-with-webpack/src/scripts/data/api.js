@@ -10,7 +10,7 @@ const ENDPOINTS = {
   GET_ALL_STORIES: `${CONFIG.BASE_URL}/stories`,
   DETAIL_STORY: (id) => `${CONFIG.BASE_URL}/stories/${id}`,
   SUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/subscribe`,
-  UNSUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/unsubscribe`,
+  UNSUBSCRIBE_NOTIFICATION: `${CONFIG.BASE_URL}/notifications/subscribe`,
 };
 
 export async function registerUser({ name, email, password }) {
