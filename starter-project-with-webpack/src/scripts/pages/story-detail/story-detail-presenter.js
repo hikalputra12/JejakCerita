@@ -5,8 +5,9 @@ export default class StoryDetailPresenter {
   #view;
   #apiModel;
   #dbModel;
+  #storyData; // Menambahkan properti untuk menyimpan data cerita
 
-  constructor(storyId, { view, apiModel,dbModel }) {
+  constructor(storyId, { view, apiModel, dbModel }) {
     this.#storyId = storyId;
     this.#view = view;
     this.#apiModel = apiModel;
@@ -34,10 +35,11 @@ export default class StoryDetailPresenter {
         this.#view.populateStoryDetailError(response.message);
         return;
       }
-      const story = await storyMapper(response.story);
-      console.log(story);
+      this.#storyData = await storyMapper(response.story); // Simpan data cerita yang dipetakan
+      console.log(this.#storyData);
 
-      this.#view.populateStoryDetailAndInitialMap(response.message, story);
+      this.#view.populateStoryDetailAndInitialMap(response.message, this.#storyData); // Gunakan data yang disimpan
+      this.showSaveButton(); // Panggil ini setelah data cerita tersedia
     } catch (error) {
       console.error('showStoryDetailAndMap: error:', error);
       this.#view.populateStoryDetailError(error.message);
@@ -46,28 +48,40 @@ export default class StoryDetailPresenter {
     }
   }
 
-   async saveStory() {
+  async saveStory() {
     try {
-      const story = await this.#apiModel.getStoryById(this.#storyId);
-      await this.#dbModel.putStory(story.data);
+      if (!this.#storyData) {
+        console.error('saveStory: story data is not available.');
+        this.#view.saveToBookmarkFailed('Data cerita tidak tersedia untuk disimpan.');
+        return;
+      }
+      await this.#dbModel.putStory(this.#storyData);
       this.#view.saveToBookmarkSuccessfully('Berhasil di tambahkan ke cerita favorit');
+      this.showSaveButton(); // Perbarui tombol setelah menyimpan
     } catch (error) {
       console.error('saveStory: error:', error);
       this.#view.saveToBookmarkFailed(error.message);
     }
   }
 
-  showSaveButton() {
-    if (this.#isStorySaved()) {
+  async #isStorySaved() {
+    try {
+      // Coba ambil cerita dari IndexedDB
+      const story = await this.#dbModel.getStory(this.#storyId);
+      return !!story; // Mengembalikan true jika cerita ditemukan, false jika tidak
+    } catch (error) {
+      console.error('Error checking if story is saved:', error);
+      return false;
+    }
+  }
+
+  async showSaveButton() {
+    if (await this.#isStorySaved()) { // Panggil dengan await
       this.#view.renderRemoveButton();
       return;
     }
 
     this.#view.renderSaveButton();
   }
-
-  #isStorySaved() {
-    return false;
-  }
+  
 }
-

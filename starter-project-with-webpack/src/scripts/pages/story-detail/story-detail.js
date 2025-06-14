@@ -2,6 +2,8 @@ import {
   generateLoaderAbsoluteTemplate,
   generateStoriesDetailErrorTemplate,
   generateStoryDetailTemplate,
+  generateAddFavoriteButtonTemplate, // Pastikan ini juga ada jika belum
+  generateRemoveFavoriteButtonTemplate, // Tambahkan baris ini
 } from '../../template';
 import { createCarousel } from '../../utils';
 import StoryDetailPresenter from './story-detail-presenter';
@@ -99,6 +101,7 @@ export default class StoryDetailPage {
   renderSaveButton() {
     document.getElementById('add-favorite-button').addEventListener('click', async () => {
       await this.#presenter.saveStory();
+      await this.#presenter.showSaveButton();
   });;
   }
    saveToBookmarkSuccessfully(message) {
