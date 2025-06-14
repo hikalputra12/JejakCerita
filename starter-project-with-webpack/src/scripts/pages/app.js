@@ -88,28 +88,41 @@ export default class App {
   async #setupPushNotification() {
     const pushNotificationTools = document.getElementById('push-notification-tools');
 
-    // TAMBAHKAN PEMERIKSAAN NULL DI SINI
+    // Tambahkan pemeriksaan null di sini
     if (!pushNotificationTools) {
       console.warn("Elemen dengan ID 'push-notification-tools' tidak ditemukan. Melewati pengaturan notifikasi push.");
-      return; // Keluar dari fungsi jika elemen tidak ada
-    }
-
-    const isSubscribed = await isCurrentPushSubscriptionAvailable();
-    if (isSubscribed) {
-      pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
-      document.getElementById('unsubscribe-button').addEventListener('click', () => {
-        unsubscribe().finally(() => {
-          this.#setupPushNotification();
-        });
-      });
       return;
     }
-    pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
-    document.getElementById('subscribe-button').addEventListener('click', () => {
-      subscribe().finally(() => {
-        this.#setupPushNotification();
-      });
-    });
+
+    // Pastikan Service Worker sudah siap sebelum mencoba mendapatkan langganan
+    if (isServiceWorkerAvailable()) {
+      try {
+        await navigator.serviceWorker.ready; // Tunggu hingga Service Worker siap
+        const isSubscribed = await isCurrentPushSubscriptionAvailable();
+        if (isSubscribed) {
+          pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+          document.getElementById('unsubscribe-button').addEventListener('click', () => {
+            unsubscribe().finally(() => {
+              this.#setupPushNotification();
+            });
+          });
+        } else {
+          pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+          document.getElementById('subscribe-button').addEventListener('click', () => {
+            subscribe().finally(() => {
+              this.#setupPushNotification();
+            });
+          });
+        }
+      } catch (error) {
+        console.error('Error during push notification setup:', error);
+        // Tangani kesalahan jika Service Worker tidak dapat disiapkan
+        pushNotificationTools.innerHTML = ''; // Hapus tombol jika ada masalah
+      }
+    } else {
+      console.log('Service Worker API unsupported or not available.');
+      pushNotificationTools.innerHTML = ''; // Hapus tombol jika Service Worker tidak tersedia
+    }
   }
 
   async renderPage() {
@@ -142,10 +155,8 @@ export default class App {
     transition.updateCallbackDone.then(() => {
       scrollTo({ top: 0, behavior: 'instant' });
       this.#setupNavigationList();
- 
-      if (isServiceWorkerAvailable()) {
-        this.#setupPushNotification();
-      }
+      // Panggil setupPushNotification di sini
+      this.#setupPushNotification();
     });
   }
 }

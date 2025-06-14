@@ -77,17 +77,19 @@ export default class StoryDetailPresenter {
   }
 
   async showSaveButton() {
-    if (await this.#isStorySaved()) { // Panggil dengan await
+    if (await this.#isStorySaved()) {
       this.#view.renderRemoveButton();
       return;
     }
 
-    this.#view.renderSaveButton(); // Mengganti rendeqrSaveButton menjadi renderSaveButton
+    this.#view.renderSaveButton();
   }
-    async removeStory() { // MODIFIKASI INI: Ganti removeReport menjadi removeStory
+
+  async removeStory() {
     try {
-      await this.#dbModel.removeStory(this.#storyId); // MODIFIKASI INI: Ganti removeReport menjadi removeStory
-      this.#view.removeFromBookmarkSuccessfully('Success to remove from bookmark');
+      await this.#dbModel.removeStory(this.#storyId);
+      this.#view.removeFromBookmarkSuccessfully('Berhasil dihapus dari cerita favorit'); // Pesan sukses yang lebih deskriptif
+      this.showSaveButton(); // Panggil ini untuk memperbarui tombol setelah menghapus
     } catch (error) {
       console.error('removeStory: error:', error);
       this.#view.removeFromBookmarkFailed(error.message);
