@@ -1,8 +1,7 @@
-import { storyMapper } from '../../data/api-mapper'; // Sesuaikan dari reportMapper
-
+import { storyMapper } from '../../data/api-mapper';
 export default class BookmarkPresenter {
   #view;
-  #model; // Sesuaikan dari #model
+  #model; 
 
 constructor({ view, model }) {
   this.#view = view;

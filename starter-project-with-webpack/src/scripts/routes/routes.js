@@ -5,7 +5,7 @@ import AboutPage from '../pages/about/about-page';
 import AddStoryPage from '../pages/new-story/new-story-page'; 
 import DetailStoryPage from '../pages/story-detail/story-detail'; 
 import BookmarkPage from '../pages/bookmark/bookmark-page';
-import { checkAuthenticatedRoute, checkUnauthenticatedRouteOnly } from '../utils/auth'; //
+import { checkAuthenticatedRoute, checkUnauthenticatedRouteOnly } from '../utils/auth'; 
 
 const routes = {
   '/login': () => checkUnauthenticatedRouteOnly(new LoginPage()),

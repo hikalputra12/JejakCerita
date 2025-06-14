@@ -2,7 +2,7 @@ import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
-import { CONFIG } from './config'; // Perubahan di sini
+import { CONFIG } from './config';
 
 precacheAndRoute(self.__WB_MANIFEST);
 precacheAndRoute(manifest);
@@ -38,7 +38,7 @@ registerRoute(
 );
 registerRoute(
   ({ request, url }) => {
-    const baseUrl = new URL(CONFIG.BASE_URL); // Perubahan di sini, menggunakan CONFIG.BASE_URL
+    const baseUrl = new URL(CONFIG.BASE_URL);
     return baseUrl.origin === url.origin && request.destination !== 'image';
   },
   new NetworkFirst({
@@ -47,7 +47,7 @@ registerRoute(
 );
 registerRoute(
   ({ request, url }) => {
-    const baseUrl = new URL(CONFIG.BASE_URL); // Perubahan di sini, menggunakan CONFIG.BASE_URL
+    const baseUrl = new URL(CONFIG.BASE_URL);
     return baseUrl.origin === url.origin && request.destination === 'image';
   },
   new StaleWhileRevalidate({

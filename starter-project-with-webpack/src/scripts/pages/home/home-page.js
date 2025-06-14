@@ -43,7 +43,7 @@ export default class HomePage {
   }
 
   populateStoriesList(message, stories) {
-    console.log('populateStoriesList called. Map instance:', this.#map); // Log status peta
+    console.log('populateStoriesList called. Map instance:', this.#map); 
     if (stories.length <= 0) {
       this.populateStoriesListEmpty();
       return;
@@ -97,8 +97,8 @@ export default class HomePage {
       }
     } catch (error) {
       console.error('HomePage.initialMap: Error during Map.build:', error);
-      this.#map = null; // Pastikan #map null jika inisialisasi gagal
-      throw error; // Lempar ulang error agar bisa ditangkap oleh presenter
+      this.#map = null;
+      throw error; 
     }
   }
 

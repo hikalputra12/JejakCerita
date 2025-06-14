@@ -1,4 +1,3 @@
-// src/scripts/pages/story-detail/story-detail-presenter.js
 import { storyMapper } from '../../data/api-mapper';
 
 export default class StoryDetailPresenter {
@@ -6,7 +5,7 @@ export default class StoryDetailPresenter {
   #view;
   #apiModel;
   #dbModel;
-  #storyData; // Menambahkan properti untuk menyimpan data cerita
+  #storyData;
 
   constructor(storyId, { view, apiModel, dbModel }) {
     this.#storyId = storyId;
@@ -36,11 +35,10 @@ export default class StoryDetailPresenter {
         this.#view.populateStoryDetailError(response.message);
         return;
       }
-      this.#storyData = await storyMapper(response.story); // Simpan data cerita yang dipetakan
+      this.#storyData = await storyMapper(response.story);
       console.log(this.#storyData);
 
-      this.#view.populateStoryDetailAndInitialMap(response.message, this.#storyData); // Gunakan data yang disimpan
-      this.showSaveButton(); // Panggil ini setelah data cerita tersedia
+      this.#view.populateStoryDetailAndInitialMap(response.message, this.#storyData);
     } catch (error) {
       console.error('showStoryDetailAndMap: error:', error);
       this.#view.populateStoryDetailError(error.message);
@@ -58,7 +56,7 @@ export default class StoryDetailPresenter {
       }
       await this.#dbModel.putStory(this.#storyData);
       this.#view.saveToBookmarkSuccessfully('Berhasil di tambahkan ke cerita favorit');
-      this.showSaveButton(); // Perbarui tombol setelah menyimpan
+      this.showSaveButton();
     } catch (error) {
       console.error('saveStory: error:', error);
       this.#view.saveToBookmarkFailed(error.message);
@@ -67,9 +65,8 @@ export default class StoryDetailPresenter {
 
   async #isStorySaved() {
     try {
-      // Coba ambil cerita dari IndexedDB
       const story = await this.#dbModel.getStory(this.#storyId);
-      return !!story; // Mengembalikan true jika cerita ditemukan, false jika tidak
+      return !!story;
     } catch (error) {
       console.error('Error checking if story is saved:', error);
       return false;
@@ -88,8 +85,8 @@ export default class StoryDetailPresenter {
   async removeStory() {
     try {
       await this.#dbModel.removeStory(this.#storyId);
-      this.#view.removeFromBookmarkSuccessfully('Berhasil dihapus dari cerita favorit'); // Pesan sukses yang lebih deskriptif
-      this.showSaveButton(); // Panggil ini untuk memperbarui tombol setelah menghapus
+      this.#view.removeFromBookmarkSuccessfully('Berhasil dihapus dari cerita favorit');
+      this.showSaveButton();
     } catch (error) {
       console.error('removeStory: error:', error);
       this.#view.removeFromBookmarkFailed(error.message);

@@ -88,16 +88,14 @@ export default class App {
   async #setupPushNotification() {
     const pushNotificationTools = document.getElementById('push-notification-tools');
 
-    // Tambahkan pemeriksaan null di sini
     if (!pushNotificationTools) {
       console.warn("Elemen dengan ID 'push-notification-tools' tidak ditemukan. Melewati pengaturan notifikasi push.");
       return;
     }
 
-    // Pastikan Service Worker sudah siap sebelum mencoba mendapatkan langganan
     if (isServiceWorkerAvailable()) {
       try {
-        await navigator.serviceWorker.ready; // Tunggu hingga Service Worker siap
+        await navigator.serviceWorker.ready; 
         const isSubscribed = await isCurrentPushSubscriptionAvailable();
         if (isSubscribed) {
           pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
@@ -116,12 +114,11 @@ export default class App {
         }
       } catch (error) {
         console.error('Error during push notification setup:', error);
-        // Tangani kesalahan jika Service Worker tidak dapat disiapkan
-        pushNotificationTools.innerHTML = ''; // Hapus tombol jika ada masalah
+        pushNotificationTools.innerHTML = ''; 
       }
     } else {
       console.log('Service Worker API unsupported or not available.');
-      pushNotificationTools.innerHTML = ''; // Hapus tombol jika Service Worker tidak tersedia
+      pushNotificationTools.innerHTML = ''; 
     }
   }
 
@@ -155,7 +152,6 @@ export default class App {
     transition.updateCallbackDone.then(() => {
       scrollTo({ top: 0, behavior: 'instant' });
       this.#setupNavigationList();
-      // Panggil setupPushNotification di sini
       this.#setupPushNotification();
     });
   }

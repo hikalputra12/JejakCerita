@@ -1,4 +1,3 @@
-// src/scripts/pages/story-detail/story-detail.js
 import {
   generateLoaderAbsoluteTemplate,
   generateStoriesDetailErrorTemplate,
@@ -65,8 +64,6 @@ export default class StoryDetailPage {
       this.#map.addMarker(storyCoordinate, markerOptions, popupOptions);
     }
 
-    // Panggil ini setelah template di-render, sehingga elemen #add-favorite-button ada
-    // dan tombol "Simpan ke Favorit" atau "Hapus dari Favorit" bisa ditampilkan.
     await this.#presenter.showSaveButton();
   }
 
@@ -102,13 +99,12 @@ export default class StoryDetailPage {
     document.getElementById('map-loading-container').innerHTML = '';
   }
 
-  renderSaveButton() { // MODIFIKASI INI: Mengoreksi nama fungsi
+  renderSaveButton() {
     document.getElementById('save-story-container').innerHTML =
       generateAddFavoriteButtonTemplate();
 
     document.getElementById('add-favorite-button').addEventListener('click', async () => {
       await this.#presenter.saveStory();
-      // Tombol akan diperbarui otomatis oleh showSaveButton() di presenter
     });
   }
 
@@ -119,14 +115,13 @@ export default class StoryDetailPage {
   saveToBookmarkFailed(message) {
     alert(message);
   }
- 
+
   renderRemoveButton() {
     document.getElementById('save-story-container').innerHTML =
       generateRemoveFavoriteButtonTemplate();
- 
+
     document.getElementById('remove-favorite-button').addEventListener('click', async () => {
-      await this.#presenter.removeStory(); // MODIFIKASI INI: Ganti removeReport menjadi removeStory
-      // Tombol akan diperbarui otomatis oleh showSaveButton() di presenter
+      await this.#presenter.removeStory();
     });
   }
 

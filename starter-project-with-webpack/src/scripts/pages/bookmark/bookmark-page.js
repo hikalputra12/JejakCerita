@@ -1,4 +1,3 @@
-// src/scripts/pages/bookmark/bookmark-page.js
 import {
   generateLoaderAbsoluteTemplate,
   generateStoryItemTemplate,
@@ -47,13 +46,12 @@ export default class BookmarkPage {
     }
 
     const html = stories.reduce((accumulator, story) => {
-      console.log('Story data for item:', story); // Log data story
+      console.log('Story data for item:', story); 
       if (this.#map) {
         const coordinate = [story.location.latitude, story.location.longitude];
         if (coordinate[0] !== undefined && coordinate[1] !== undefined) {
             const markerOptions = { alt: story.name || 'Story Location' };
             let popupOptions = null;
-            // Hanya tambahkan popup jika placeName tersedia
             if (story.location.placeName && story.location.placeName !== 'Lokasi Tidak Diketahui' && story.location.placeName !== 'Gagal mengambil nama lokasi') {
                 popupOptions = { content: story.name + ' - ' + story.location.placeName };
             }

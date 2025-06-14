@@ -169,8 +169,8 @@ export async function subscribePushNotification({ endpoint, keys: { p256dh, auth
     endpoint,
     keys: { p256dh, auth },
   });
- 
-  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE_NOTIFICATION, { // Perbaikan di sini
+
+  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE_NOTIFICATION, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -179,18 +179,18 @@ export async function subscribePushNotification({ endpoint, keys: { p256dh, auth
     body: data,
   });
   const json = await fetchResponse.json();
- 
+
   return {
     ...json,
     ok: fetchResponse.ok,
   };
 }
- 
+
 export async function unsubscribePushNotification({ endpoint }) {
   const accessToken = getAccessToken();
   const data = JSON.stringify({ endpoint });
- 
-  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE_NOTIFICATION, { // Perbaikan di sini
+
+  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE_NOTIFICATION, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ export async function unsubscribePushNotification({ endpoint }) {
     body: data,
   });
   const json = await fetchResponse.json();
- 
+
   return {
     ...json,
     ok: fetchResponse.ok,

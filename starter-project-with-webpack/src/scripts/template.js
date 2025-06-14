@@ -15,7 +15,7 @@ export function generateUnsubscribeButtonTemplate() {
   `;
 }
 
-export function generateLoaderTemplate({}) {
+export function generateLoaderTemplate({ }) {
   return `
   <div class="loader"></div>`;
 }
@@ -184,7 +184,6 @@ export function generateStoryDetailTemplate({
   `;
 }
 
-// Menyesuaikan template tombol "Simpan Laporan" menjadi "Simpan ke Favorit"
 export function generateAddFavoriteButtonTemplate() {
   return `
     <button id="add-favorite-button" class="btn">
@@ -192,8 +191,6 @@ export function generateAddFavoriteButtonTemplate() {
     </button>
   `;
 }
-
-// Menyesuaikan template tombol "Buang Laporan" menjadi "Hapus dari Favorit"
 export function generateRemoveFavoriteButtonTemplate() {
   return `
     <button id="remove-favorite-button" class="btn btn-transparent">
