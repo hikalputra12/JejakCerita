@@ -49,10 +49,10 @@ export default class StoryDetailPresenter {
    async saveStory() {
     try {
       const story = await this.#apiModel.getStoryById(this.#storyId);
-      await this.#dbModel.putStory(report.data);
+      await this.#dbModel.putStory(story.data);
       this.#view.saveToBookmarkSuccessfully('Berhasil di tambahkan ke cerita favorit');
     } catch (error) {
-      console.error('saveReport: error:', error);
+      console.error('saveStory: error:', error);
       this.#view.saveToBookmarkFailed(error.message);
     }
   }
