@@ -10,82 +10,46 @@
   "theme_color": "#5f43b2",
   "icons": [
     {
-      "src": "images/icons/app-icon-144.png",
+      "src": "images/icons/icon-144.png",
       "type": "image/png",
-      "sizes": "144x144",
+      "sizes": "400x407",
       "purpose": "any"
-    },
-    {
-      "src": "images/icons/maskable-icon-x48.png",
-      "type": "image/png",
-      "sizes": "48x48",
-      "purpose": "maskable"
-    },
-    {
-      "src": "images/icons/maskable-icon-x96.png",
-      "type": "image/png",
-      "sizes": "96x96",
-      "purpose": "maskable"
-    },
-    {
-      "src": "images/icons/maskable-icon-x192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "maskable"
-    },
-    {
-      "src": "images/icons/maskable-icon-x384.png",
-      "type": "image/png",
-      "sizes": "384x384",
-      "purpose": "maskable"
-    },
-    {
-      "src": "images/icons/maskable-icon-x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
     }
   ],
     "screenshots": [
     {
       "src": "images/screenshots/jejakcerita1.png",
-      "sizes": "1920x1043",
+      "sizes": "800x369",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "images/screenshots/jejakcerita2.png",
-      "sizes": "1920x1043",
+      "sizes": "800x334",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "images/screenshots/jejakcerita3.png",
-      "sizes": "1920x1043",
+      "sizes": "800x368",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "images/screenshots/jejakcerita7.png",
-      "sizes": "1920x1043",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "images/screenshots/jejakcerita7.png",
-      "sizes": "1080x2280",
+      "sizes": "400x376",
       "type": "image/png",
       "form_factor": "narrow"
     },
     {
       "src": "images/screenshots/jejakcerita8.png",
-      "sizes": "1080x2280",
+      "sizes": "417x747",
       "type": "image/png",
       "form_factor": "narrow"
     },
     {
       "src": "images/screenshots/jejakcerita9.png",
-      "sizes": "1080x2280",
+      "sizes": "415x739",
       "type": "image/png",
       "form_factor": "narrow"
     }

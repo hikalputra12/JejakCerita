@@ -5,8 +5,7 @@ import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { CONFIG } from './config';
 
-precacheAndRoute(self.__WB_MANIFEST); // PERTAHANKAN HANYA BARIS INI
-// precacheAndRoute(manifest); // HAPUS BARIS INI JIKA ADA
+precacheAndRoute(self.__WB_MANIFEST); 
 
 registerRoute(
   ({ url }) => {
