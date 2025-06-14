@@ -6,9 +6,11 @@ import {
 } from '../../template'; // Sesuaikan dari ../../templates
 import BookmarkPresenter from './bookmark-presenter';
 import Database from '../../data/database';
+import Map from '../../utils/map';
+
 export default class BookmarkPage {
   #presenter = null; // Menambahkan ini agar bisa diinisialisasi di afterRender
-
+  #map = null;
   async render() {
     return `
       <section>
@@ -44,6 +46,13 @@ export default class BookmarkPage {
     }
 
     const html = stories.reduce((accumulator, story) => { // Sesuaikan dari report menjadi story
+      if (this.#map) {
+        const coordinate = [story.location.latitude, story.location.longitude];
+        const markerOptions = { alt: story.title };
+        const popupOptions = { content: story.title };
+        this.#map.addMarker(coordinate, markerOptions, popupOptions);
+      }
+      
       return accumulator.concat(
         generateStoryItemTemplate({ // Sesuaikan dari generateReportItemTemplate
           ...story,
@@ -53,8 +62,8 @@ export default class BookmarkPage {
       );
     }, '');
 
-    document.getElementById('stories-list').innerHTML = ` // Sesuaikan dari reports-list
-      <div class="stories-list">${html}</div> // Sesuaikan dari reports-list
+    document.getElementById('stories-list').innerHTML = ` 
+      <div class="stories-list">${html}</div> 
     `;
   }
 
@@ -73,5 +82,17 @@ export default class BookmarkPage {
 
   hideStoriesListLoading() { // Sesuaikan dari hideReportsListLoading
     document.getElementById('stories-list-loading-container').innerHTML = ''; // Sesuaikan dari reports-list-loading-container
+  }
+  async initialMap() {
+    this.#map = await Map.build('#map', {
+      zoom: 10,
+      locate: true,
+    });
+  }
+  showMapLoading() {
+    document.getElementById('map-loading-container').innerHTML = generateLoaderAbsoluteTemplate();
+  }
+  hideMapLoading() {
+    document.getElementById('map-loading-container').innerHTML = '';
   }
 }

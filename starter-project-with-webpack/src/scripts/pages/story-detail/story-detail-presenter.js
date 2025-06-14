@@ -81,7 +81,16 @@ export default class StoryDetailPresenter {
       return;
     }
 
-    this.#view.renderSaveButton();
+    this.#view.rendeqrSaveButton();
+  }
+    async removeStory() {
+    try {
+      await this.#dbModel.removeStory(this.#storyId);
+      this.#view.removeFromBookmarkSuccessfully('Success to remove from bookmark');
+    } catch (error) {
+      console.error('removeStory: error:', error);
+      this.#view.removeFromBookmarkFailed(error.message);
+    }
   }
   
 }

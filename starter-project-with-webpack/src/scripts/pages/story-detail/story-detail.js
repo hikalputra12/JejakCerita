@@ -116,8 +116,15 @@ export default class StoryDetailPage {
       generateRemoveFavoriteButtonTemplate();
  
     document.getElementById('remove-favorite-button').addEventListener('click', async () => {
-      alert('Fitur simpan laporan akan segera hadir!');
+      await this.#presenter.removeReport();
+      await this.#presenter.showSaveButton();
     });
+  }
+    removeFromBookmarkSuccessfully(message) {
+    console.log(message);
+  }
+  removeFromBookmarkFailed(message) {
+    alert(message);
   }
 
 }

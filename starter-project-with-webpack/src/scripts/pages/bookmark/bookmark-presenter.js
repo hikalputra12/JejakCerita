@@ -2,27 +2,40 @@ import { storyMapper } from '../../data/api-mapper'; // Sesuaikan dari reportMap
 
 export default class BookmarkPresenter {
   #view;
-  #dbModel; // Sesuaikan dari #model
+  #model; // Sesuaikan dari #model
 
-  constructor({ view, dbModel }) { // Sesuaikan parameter dari model menjadi dbModel
-    this.#view = view;
-    this.#dbModel = dbModel; // Sesuaikan dari this.#model
+constructor({ view, model }) {
+  this.#view = view;
+  this.#model = model;
+}
+async showStoriesListMap() {
+  this.#view.showMapLoading();
+  try {
+    await this.#view.initialMap();
+  } catch (error) {
+    console.error('showStoriesListMap: error:', error);
+  } finally {
+    this.#view.hideMapLoading();
   }
+}
 
-  async initialGalleryAndMap() {
-    this.#view.showStoriesListLoading(); // Sesuaikan dari showReportsListLoading
+async initialGalleryAndMap() {
+  this.#view.showStoriesListLoading();
 
-    try {
-      const listOfStories = await this.#dbModel.getAllStories(); // Sesuaikan dari #model.getAllReports()
-      const stories = await Promise.all(listOfStories.map(storyMapper)); // Sesuaikan dari reports dan reportMapper
+  try {
+    await this.showStoriesListMap();
 
-      const message = 'Berhasil mendapatkan daftar cerita favorit.'; // Sesuaikan pesan
-      this.#view.populateBookmarkedStories(message, stories); // Sesuaikan dari populateBookmarkedReports
-    } catch (error) {
-      console.error('initialGalleryAndMap: error:', error);
-      this.#view.populateBookmarkedStoriesError(error.message); // Sesuaikan dari populateBookmarkedReportsError
-    } finally {
-      this.#view.hideStoriesListLoading(); // Sesuaikan dari hideReportsListLoading
-    }
+    const listOfStories = await this.#model.getAllStories();
+    const stories = await Promise.all(listOfStories.map(storyMapper));
+
+    const message = 'Berhasil mendapatkan daftar cerita tersimpan.';
+    this.#view.populateBookmarkedStories(message, stories);
+  } catch (error) {
+    console.error('initialGalleryAndMap: error:', error);
+    this.#view.populateBookmarkedStoriesError(error.message);
+  } finally {
+    this.#view.hideStoriesListLoading();
   }
+}
+ 
 }
