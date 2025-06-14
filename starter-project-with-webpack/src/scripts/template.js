@@ -27,6 +27,7 @@ export function generateLoaderAbsoluteTemplate() {
 export function generateMainNavigationListTemplate() {
   return `
   <li><a id="story-list-button" class="story-list-button" href="#/">Semua Cerita</a></li>
+   <li><a id="story-save-button" class="story-save-button" href="#/bookmark">Cerita Favorit</a></li>
   <li><a id="about-page-button" class="about-page-button"  href="#/about">Tentang Jejak Cerita</a></li></li>`;
 }
 
@@ -173,8 +174,30 @@ export function generateStoryDetailTemplate({
             <div id="map-loading-container"></div>
           </div>
         </div>
+          <div id="save-story-container" class="story-detail__save-story">
+            ${generateAddFavoriteButtonTemplate()}
+          </div>
       </div>
+
     </div>
     <div id="save-actions-container" class="story-detail__save-actions-container"></div>
+  `;
+}
+
+// Menyesuaikan template tombol "Simpan Laporan" menjadi "Simpan ke Favorit"
+export function generateAddFavoriteButtonTemplate() {
+  return `
+    <button id="add-favorite-button" class="btn">
+      <i class="fas fa-heart"></i> Simpan ke Favorit
+    </button>
+  `;
+}
+
+// Menyesuaikan template tombol "Buang Laporan" menjadi "Hapus dari Favorit"
+export function generateRemoveFavoriteButtonTemplate() {
+  return `
+    <button id="remove-favorite-button" class="btn btn-transparent">
+      <i class="fas fa-heart-crack"></i> Hapus dari Favorit
+    </button>
   `;
 }

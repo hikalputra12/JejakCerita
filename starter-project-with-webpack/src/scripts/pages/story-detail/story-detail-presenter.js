@@ -4,11 +4,13 @@ export default class StoryDetailPresenter {
   #storyId;
   #view;
   #apiModel;
+  #dbModel;
 
-  constructor(storyId, { view, apiModel }) {
+  constructor(storyId, { view, apiModel,dbModel }) {
     this.#storyId = storyId;
     this.#view = view;
     this.#apiModel = apiModel;
+    this.#dbModel = dbModel;
   }
 
   async showStoryDetailMap() {
@@ -41,6 +43,17 @@ export default class StoryDetailPresenter {
       this.#view.populateStoryDetailError(error.message);
     } finally {
       this.#view.hideStoryDetailLoading();
+    }
+  }
+
+   async saveStory() {
+    try {
+      const story = await this.#apiModel.getStoryById(this.#storyId);
+      await this.#dbModel.putStory(report.data);
+      this.#view.saveToBookmarkSuccessfully('Berhasil di tambahkan ke cerita favorit');
+    } catch (error) {
+      console.error('saveReport: error:', error);
+      this.#view.saveToBookmarkFailed(error.message);
     }
   }
 

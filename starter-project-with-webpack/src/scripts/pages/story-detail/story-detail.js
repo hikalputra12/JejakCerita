@@ -8,6 +8,7 @@ import StoryDetailPresenter from './story-detail-presenter';
 import { parseActivePathname } from '../../routes/url-parser';
 import Map from '../../utils/map';
 import * as StoryAPI from '../../data/api';
+import Database from '../../data/database';
 
 export default class StoryDetailPage {
   #presenter = null;
@@ -29,6 +30,7 @@ export default class StoryDetailPage {
     this.#presenter = new StoryDetailPresenter(parseActivePathname().id, {
       view: this,
       apiModel: StoryAPI,
+      dbModel: Database,
     });
 
     this.#presenter.showStoryDetail();
@@ -94,4 +96,25 @@ export default class StoryDetailPage {
   hideMapLoading() {
     document.getElementById('map-loading-container').innerHTML = '';
   }
+  renderSaveButton() {
+    document.getElementById('add-favorite-button').addEventListener('click', async () => {
+      await this.#presenter.saveStory();
+  });;
+  }
+   saveToBookmarkSuccessfully(message) {
+    console.log(message);
+  }
+  saveToBookmarkFailed(message) {
+    alert(message);
+  }
+ 
+  renderRemoveButton() {
+    document.getElementById('save-story-container').innerHTML =
+      generateRemoveFavoriteButtonTemplate();
+ 
+    document.getElementById('remove-favorite-button').addEventListener('click', async () => {
+      alert('Fitur simpan laporan akan segera hadir!');
+    });
+  }
+
 }

@@ -4,6 +4,7 @@ import HomePage from '../pages/home/home-page';
 import AboutPage from '../pages/about/about-page'; 
 import AddStoryPage from '../pages/new-story/new-story-page'; 
 import DetailStoryPage from '../pages/story-detail/story-detail'; 
+import BookmarkPage from '../pages/bookmark/bookmark-page';
 import { checkAuthenticatedRoute, checkUnauthenticatedRouteOnly } from '../utils/auth'; //
 
 const routes = {
@@ -14,6 +15,7 @@ const routes = {
   '/new': () => checkAuthenticatedRoute(new AddStoryPage()), 
   '/stories/:id': () => checkAuthenticatedRoute(new DetailStoryPage()),
   '/about': () => checkAuthenticatedRoute(new AboutPage()),
+  '/bookmark': () => checkAuthenticatedRoute(new BookmarkPage()),
 };
 
 export default routes;
