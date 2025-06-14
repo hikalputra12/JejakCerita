@@ -10,7 +10,7 @@
   "theme_color": "#5f43b2",
   "icons": [
     {
-      "src": "images/icons/icon-x144.png",
+      "src": "images/icons/app-icon-144.png",
       "type": "image/png",
       "sizes": "144x144",
       "purpose": "any"
@@ -66,7 +66,7 @@
       "form_factor": "wide"
     },
     {
-      "src": "images/screenshots/jejakcerita4.png",
+      "src": "images/screenshots/jejakcerita7.png",
       "sizes": "1920x1043",
       "type": "image/png",
       "form_factor": "wide"
