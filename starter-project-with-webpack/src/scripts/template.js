@@ -27,7 +27,7 @@ export function generateLoaderAbsoluteTemplate() {
 export function generateMainNavigationListTemplate() {
   return `
   <li><a id="story-list-button" class="story-list-button" href="#/">Semua Cerita</a></li>
-   <li><a id="story-save-button" class="story-save-button" href="#/bookmark">Cerita Favorit</a></li>
+   <li><a id="story-save-button" class="story-save-button" href="#/bookmark">Cerita Favorit <i class="fas fa-star"></i></a></li>
   <li><a id="about-page-button" class="about-page-button"  href="#/about">Tentang Jejak Cerita</a></li></li>`;
 }
 
@@ -144,11 +144,11 @@ export function generateStoryDetailTemplate({
   return `
     <div class="story-detail__header">
       <div class="story-detail__more-info">
+      <div id="author" class="story-detail__author" >Dibuat oleh: ${userName}</div>
         <div class="story-detail__more-info__inline">
           <div id="createdat" class="story-detail__createdat" ><i class="fas fa-calendar-alt"></i> ${createdAtFormatted}</div>
           <div id="location-place-name" class="story-detail__location__place-name" ><i class="fas fa-map"></i> ${location.placeName}</div>
         </div>
-        <div id="author" class="story-detail__author" >Dibuat oleh: ${userName}</div>
       </div>
     </div>
 

@@ -1,15 +1,16 @@
+// src/scripts/pages/bookmark/bookmark-page.js
 import {
   generateLoaderAbsoluteTemplate,
-  generateStoryItemTemplate, // Sesuaikan dari generateReportItemTemplate
-  generateStoriesListEmptyTemplate, // Sesuaikan dari generateReportsListEmptyTemplate
-  generateStoriesListErrorTemplate, // Sesuaikan dari generateReportsListErrorTemplate
-} from '../../template'; // Sesuaikan dari ../../templates
+  generateStoryItemTemplate,
+  generateStoriesListEmptyTemplate,
+  generateStoriesListErrorTemplate,
+} from '../../template';
 import BookmarkPresenter from './bookmark-presenter';
 import Database from '../../data/database';
 import Map from '../../utils/map';
 
 export default class BookmarkPage {
-  #presenter = null; // Menambahkan ini agar bisa diinisialisasi di afterRender
+  #presenter = null;
   #map = null;
   async render() {
     return `
@@ -39,25 +40,33 @@ export default class BookmarkPage {
     await this.#presenter.initialGalleryAndMap();
   }
 
-  populateBookmarkedStories(message, stories) { // Sesuaikan dari populateBookmarkedReports, reports menjadi stories
+  populateBookmarkedStories(message, stories) {
     if (stories.length <= 0) {
-      this.populateBookmarkedStoriesListEmpty(); // Sesuaikan dari populateBookmarkedReportsListEmpty
+      this.populateBookmarkedStoriesListEmpty();
       return;
     }
 
-    const html = stories.reduce((accumulator, story) => { // Sesuaikan dari report menjadi story
+    const html = stories.reduce((accumulator, story) => {
+      console.log('Story data for item:', story); // Log data story
       if (this.#map) {
         const coordinate = [story.location.latitude, story.location.longitude];
-        const markerOptions = { alt: story.title };
-        const popupOptions = { content: story.title };
-        this.#map.addMarker(coordinate, markerOptions, popupOptions);
+        if (coordinate[0] !== undefined && coordinate[1] !== undefined) {
+            const markerOptions = { alt: story.name || 'Story Location' };
+            let popupOptions = null;
+            // Hanya tambahkan popup jika placeName tersedia
+            if (story.location.placeName && story.location.placeName !== 'Lokasi Tidak Diketahui' && story.location.placeName !== 'Gagal mengambil nama lokasi') {
+                popupOptions = { content: story.name + ' - ' + story.location.placeName };
+            }
+            this.#map.addMarker(coordinate, markerOptions, popupOptions);
+        } else {
+            console.warn('Skipping marker for story due to missing coordinates:', story);
+        }
       }
       
       return accumulator.concat(
-        generateStoryItemTemplate({ // Sesuaikan dari generateReportItemTemplate
+        generateStoryItemTemplate({
           ...story,
-          // Sesuaikan dengan properti story Anda, misal:
-          userName: story.user.name, // Sesuaikan dari reporterName, placeNameLocation
+          userName: story.user.name,
         }),
       );
     }, '');
@@ -67,21 +76,21 @@ export default class BookmarkPage {
     `;
   }
 
-  populateBookmarkedStoriesListEmpty() { // Sesuaikan dari populateBookmarkedReportsListEmpty
-    document.getElementById('stories-list').innerHTML = generateStoriesListEmptyTemplate(); // Sesuaikan dari reports-list, generateReportsListEmptyTemplate
+  populateBookmarkedStoriesListEmpty() {
+    document.getElementById('stories-list').innerHTML = generateStoriesListEmptyTemplate();
   }
 
-  populateBookmarkedStoriesError(message) { // Sesuaikan dari populateBookmarkedReportsError
-    document.getElementById('stories-list').innerHTML = generateStoriesListErrorTemplate(message); // Sesuaikan dari reports-list, generateReportsListErrorTemplate
+  populateBookmarkedStoriesError(message) {
+    document.getElementById('stories-list').innerHTML = generateStoriesListErrorTemplate(message);
   }
 
-  showStoriesListLoading() { // Sesuaikan dari showReportsListLoading
-    document.getElementById('stories-list-loading-container').innerHTML = // Sesuaikan dari reports-list-loading-container
+  showStoriesListLoading() {
+    document.getElementById('stories-list-loading-container').innerHTML =
       generateLoaderAbsoluteTemplate();
   }
 
-  hideStoriesListLoading() { // Sesuaikan dari hideReportsListLoading
-    document.getElementById('stories-list-loading-container').innerHTML = ''; // Sesuaikan dari reports-list-loading-container
+  hideStoriesListLoading() {
+    document.getElementById('stories-list-loading-container').innerHTML = '';
   }
   async initialMap() {
     this.#map = await Map.build('#map', {

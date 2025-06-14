@@ -42,7 +42,7 @@ registerRoute(
     return baseUrl.origin === url.origin && request.destination !== 'image';
   },
   new NetworkFirst({
-    cacheName: 'citycare-api',
+    cacheName: 'jejakcerita-api',
   }),
 );
 registerRoute(
@@ -51,7 +51,7 @@ registerRoute(
     return baseUrl.origin === url.origin && request.destination === 'image';
   },
   new StaleWhileRevalidate({
-    cacheName: 'citycare-api-images',
+    cacheName: 'jejakcerita-api-images',
   }),
 );
 registerRoute(
@@ -67,12 +67,8 @@ self.addEventListener('push', (event) => {
   console.log('Service worker pushing...');
 
   async function chainPromise() {
-    const data = event.data ? event.data.json() : {};
-    console.log('Data received from push event:', data);
-    const storyDescription = data.description || data.bodyContent || 'Tidak ada deskripsi yang tersedia.';
-
     await self.registration.showNotification('Story berhasil dibuat', {
-      body: `Anda telah membuat story baru dengan deskripsi: ${storyDescription}`,
+      body: `silakan untuk melihat story yang anda buat di halaman semua cerita`,
     });
   }
 

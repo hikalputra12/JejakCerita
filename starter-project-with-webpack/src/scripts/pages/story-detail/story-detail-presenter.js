@@ -1,3 +1,4 @@
+// src/scripts/pages/story-detail/story-detail-presenter.js
 import { storyMapper } from '../../data/api-mapper';
 
 export default class StoryDetailPresenter {
@@ -81,16 +82,15 @@ export default class StoryDetailPresenter {
       return;
     }
 
-    this.#view.rendeqrSaveButton();
+    this.#view.renderSaveButton(); // Mengganti rendeqrSaveButton menjadi renderSaveButton
   }
-    async removeStory() {
+    async removeStory() { // MODIFIKASI INI: Ganti removeReport menjadi removeStory
     try {
-      await this.#dbModel.removeStory(this.#storyId);
+      await this.#dbModel.removeStory(this.#storyId); // MODIFIKASI INI: Ganti removeReport menjadi removeStory
       this.#view.removeFromBookmarkSuccessfully('Success to remove from bookmark');
     } catch (error) {
       console.error('removeStory: error:', error);
       this.#view.removeFromBookmarkFailed(error.message);
     }
   }
-  
 }

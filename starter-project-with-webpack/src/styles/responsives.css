@@ -146,7 +146,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap:22rem;
+    gap:10rem;
   }
 
   .navigation-drawer__navlist-main,

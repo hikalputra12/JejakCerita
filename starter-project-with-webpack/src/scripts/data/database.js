@@ -1,4 +1,4 @@
-// src/scripts/data/story-db.js
+// src/scripts/data/database.js
 import { openDB } from 'idb';
 
 const DATABASE_NAME = 'jejakcerita-db'; // Nama database yang disesuaikan
@@ -28,7 +28,7 @@ const Database = {
     async getAllStories() {
     return (await dbPromise).getAll(OBJECT_STORE_NAME);
   },
-    async removeReport(id) {
+    async removeStory(id) { // MODIFIKASI INI: Ganti removeReport menjadi removeStory
     return (await dbPromise).delete(OBJECT_STORE_NAME, id);
   },
 
