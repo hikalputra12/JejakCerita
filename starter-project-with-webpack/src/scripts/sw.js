@@ -1,11 +1,12 @@
+// src/scripts/sw.js
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { CONFIG } from './config';
 
-precacheAndRoute(self.__WB_MANIFEST);
-precacheAndRoute(manifest);
+precacheAndRoute(self.__WB_MANIFEST); // PERTAHANKAN HANYA BARIS INI
+// precacheAndRoute(manifest); // HAPUS BARIS INI JIKA ADA
 
 registerRoute(
   ({ url }) => {

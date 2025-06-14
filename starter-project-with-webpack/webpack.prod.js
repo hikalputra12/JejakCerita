@@ -1,13 +1,19 @@
+// webpack.prod.js
 const common = require('./webpack.common.js');
 const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const { InjectManifest } = require('workbox-webpack-plugin');
-const { GenerateSW } = require('workbox-webpack-plugin');
+// const { GenerateSW } = require('workbox-webpack-plugin'); // Hapus baris ini
+const { InjectManifest } = require('workbox-webpack-plugin'); // Pertahankan ini
 
 module.exports = merge(common, {
   mode: 'production',
+  performance: {
+    hints: 'warning',
+    maxEntrypointSize: 512 * 1024,
+    maxAssetSize: 512 * 1024,
+  },
   module: {
     rules: [
       {
@@ -34,12 +40,14 @@ module.exports = merge(common, {
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),
-    new GenerateSW({
-      swDest: 'sw.workbox.bundle.js',
-    }),
+    // Hapus plugin GenerateSW ini:
+    // new GenerateSW({
+    //   swDest: 'sw.workbox.bundle.js',
+    // }),
+    // Pertahankan plugin InjectManifest ini:
     new InjectManifest({
       swSrc: path.resolve(__dirname, 'src/scripts/sw.js'),
-      swDest: 'sw.bundle.js',
+      swDest: 'sw.bundle.js', // Service Worker Anda akan bernama sw.bundle.js
     }),
   ],
 });
